@@ -20,7 +20,7 @@ Route::get('/', function () {
 
 // Rutas de Autenticación
 Route::middleware('guest')->group(function () {
-    Route::get('/login', [AuthController::class, 'showLogin'])->name('auth.showLogin');
+    Route::get('/', [AuthController::class, 'showLogin'])->name('auth.showLogin');
     Route::post('/login', [AuthController::class, 'authenticate'])->name('auth.authenticate');
     
     Route::get('/register', [AuthController::class, 'showRegister'])->name('auth.showRegister');
