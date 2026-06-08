@@ -1,332 +1,202 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agenda JCTE Ocosingo 2026</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+@extends('layouts.app')
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #eef2ff;
-            color: #1f2937;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+@section('title', 'Dashboard')
 
-        .topbar {
-            background: #ffffff;
-            border-bottom: 1px solid #e5e7eb;
-            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
-        }
+@push('styles')
+    .hero {
+        background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+        border-radius: 28px;
+        padding: 40px;
+        box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 28px;
+        position: relative;
+        z-index: 1;
+    }
 
-        .topbar-inner {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 18px 28px;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-        }
+    .hero-header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 24px;
+        align-items: center;
+    }
 
-        .brand {
-            font-size: 1.15rem;
-            font-weight: 800;
-            letter-spacing: -0.03em;
-            color: #111827;
-        }
+    .hero-title {
+        max-width: 700px;
+    }
 
-        .nav-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            align-items: center;
-        }
+    .hero-title h1 {
+        font-size: 2.6rem;
+        line-height: 1.05;
+        color: #111827;
+        margin-bottom: 14px;
+    }
 
-        .nav-links a {
-            color: #4b5563;
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 600;
-            padding: 10px 8px;
-            border-radius: 999px;
-            transition: background 0.2s, color 0.2s;
-        }
+    .hero-title p {
+        font-size: 1rem;
+        color: #4b5563;
+        line-height: 1.8;
+    }
 
-        .nav-links a:hover {
-            background: #e0e7ff;
-            color: #1e3a8a;
-        }
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 20px;
+        margin-top: 10px;
+    }
 
-        .logout-btn {
-            background: #dc2626;
-            color: white;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 999px;
-            cursor: pointer;
-            font-size: 0.95rem;
-            font-weight: 700;
-            transition: background 0.2s;
-        }
+    .stat-card {
+        background: #f8fafc;
+        border: 1px solid #e5e7eb;
+        border-radius: 24px;
+        padding: 26px;
+        min-height: 130px;
+    }
 
-        .logout-btn:hover {
-            background: #b91c1c;
-        }
+    .stat-card h3 {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: #4f46e5;
+        margin-bottom: 12px;
+    }
 
-        .main {
-            max-width: 1400px;
-            margin: 30px auto 50px;
-            padding: 0 24px;
-        }
+    .stat-card p {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #111827;
+    }
 
-        .hero {
-            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-            border-radius: 28px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 28px;
-        }
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 20px;
+        margin-top: 24px;
+    }
 
-        .hero-header {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 24px;
-            align-items: center;
-        }
+    .info-card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 24px;
+        padding: 24px;
+        min-height: 140px;
+    }
 
-        .hero-title {
-            max-width: 700px;
-        }
+    .info-card h3 {
+        color: #4338ca;
+        margin-bottom: 10px;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+    }
 
-        .hero-title h1 {
-            font-size: 2.6rem;
-            line-height: 1.05;
-            color: #111827;
-            margin-bottom: 14px;
-        }
+    .info-card p {
+        color: #111827;
+        font-size: 1.4rem;
+        font-weight: 700;
+    }
 
-        .hero-title p {
-            font-size: 1rem;
-            color: #4b5563;
-            line-height: 1.8;
-        }
+    .action-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-top: 24px;
+    }
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin-top: 10px;
-        }
+    .action-button {
+        background: #4f46e5;
+        color: white;
+        padding: 16px 22px;
+        border-radius: 18px;
+        text-decoration: none;
+        font-weight: 700;
+        min-width: 180px;
+        text-align: center;
+        transition: background 0.2s;
+    }
 
-        .stat-card {
-            background: #f8fafc;
-            border: 1px solid #e5e7eb;
-            border-radius: 24px;
-            padding: 26px;
-            min-height: 130px;
-        }
+    .action-button:hover {
+        background: #3730a3;
+    }
 
-        .stat-card h3 {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            color: #4f46e5;
-            margin-bottom: 12px;
-        }
+    @media (max-width: 860px) {
+        .hero { padding: 30px; }
+        .hero-title h1 { font-size: 2.2rem; }
+    }
+@endpush
 
-        .stat-card p {
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: #111827;
-        }
+@section('content')
+    @php $userRole = Auth::user()->role->tipo ?? ''; @endphp
 
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
-            margin-top: 24px;
-        }
-
-        .info-card {
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 24px;
-            padding: 24px;
-            min-height: 140px;
-        }
-
-        .info-card h3 {
-            color: #4338ca;
-            margin-bottom: 10px;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-        }
-
-        .info-card p {
-            color: #111827;
-            font-size: 1.4rem;
-            font-weight: 700;
-        }
-
-        .alert {
-            background: #d4edda;
-            color: #155724;
-            padding: 16px 18px;
-            border-radius: 14px;
-            margin-bottom: 24px;
-            border: 1px solid #c3e6cb;
-        }
-
-        .main {
-            max-width: 1400px;
-            margin: 30px auto 0;
-            padding: 0 24px;
-            position: relative;
-            flex: 1;
-        }
-
-        .watermark {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0.15;
-            z-index: 0;
-        }
-
-        .footer-franja {
-            width: 100vw;
-            max-width: 100%;
-            margin-left: calc(50% - 50vw);
-            margin-top: 28px;
-        }
-
-        .footer-franja img {
-            width: 100%;
-            display: block;
-        }
-
-        .watermark img {
-            width: 520px;
-            max-width: 80%;
-        }
-
-        .hero {
-            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-            border-radius: 28px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 28px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .footer-franja {
-            margin-top: 28px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .footer-franja img {
-            width: 100%;
-            max-width: 1400px;
-            border-radius: 20px;
-            display: block;
-        }
-
-        @media (max-width: 860px) {
-            .hero {
-                padding: 30px;
-            }
-
-            .hero-title h1 {
-                font-size: 2.2rem;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .topbar-inner {
-                justify-content: center;
-            }
-
-            .nav-links {
-                justify-content: center;
-            }
-        }
-    </style>
-</head>
-<body>
-    <header class="topbar">
-        <div class="topbar-inner">
-            <div class="brand">Agenda JCTE Ocosingo 2026</div>
-            <nav class="nav-links">
-                <a href="#">Jueces</a>
-                <a href="#">Psicólogos</a>
-                <a href="#">Traductor</a>
-                <a href="#">Audiencias</a>
-                <a href="#">Tipos de audiencias</a>
-                <a href="#">Delitos</a>
-                <a href="#">Resumen</a>
-            </nav>
-            <form action="{{ route('auth.logout') }}" method="POST" style="display: inline;">
-                @csrf
-                <button type="submit" class="logout-btn">Cerrar sesión</button>
-            </form>
-        </div>
-    </header>
-
-    <main class="main">
-        <div class="watermark">
-            <img src="{{ asset('img/fondo.png') }}" alt="Marca de agua">
+    <section class="hero">
+        <div class="hero-header">
+            <div class="hero-title">
+                <h1>Bienvenido a Agenda JCTE Ocosingo 2026</h1>
+                <p>Accede rápido a las acciones disponibles según tu rol en el sistema.</p>
+            </div>
         </div>
 
-        @if (session('success'))
-            <div class="alert">{{ session('success') }}</div>
-        @endif
-
-        <section class="hero">
-            <div class="hero-header">
-                <div class="hero-title">
-                    <h1>Bienvenido a Agenda JCTE Ocosingo 2026</h1>
-                </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Usuario</h3>
+                <p>{{ Auth::user()->usuario }}</p>
             </div>
-
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <h3>Usuario</h3>
-                    <p>{{ Auth::user()->usuario }}</p>
-                </div>
-                <div class="stat-card">
-                    <h3>Puesto</h3>
-                    <p>{{ Auth::user()->puesto }}</p>
-                </div>
-                <div class="stat-card">
-                    <h3>Rol</h3>
-                    <p>{{ Auth::user()->role->tipo ?? 'N/A' }}</p>
-                </div>
+            <div class="stat-card">
+                <h3>Puesto</h3>
+                <p>{{ Auth::user()->puesto }}</p>
             </div>
-        </section>
-    </main>
+            <div class="stat-card">
+                <h3>Rol</h3>
+                <p>{{ $userRole ?: 'N/A' }}</p>
+            </div>
+        </div>
 
-    <div class="footer-franja">
-        <img src="{{ asset('img/franja.png') }}" alt="Franja decorativa">
-    </div>
-</body>
-</html>
+        <div class="action-buttons">
+            @if ($userRole === 'admin')
+                <a href="{{ route('audiencias.index') }}" class="action-button">Ver audiencias</a>
+                <a href="{{ route('resumen.index') }}" class="action-button">Ver resumen</a>
+                
+            @elseif($userRole === 'oficinista')
+                <a href="{{ route('audiencias.create') }}" class="action-button">Crear audiencia</a>
+                <a href="{{ route('resumen.create') }}" class="action-button">Crear resumen</a>
+                <a href="{{ route('audiencias.index') }}" class="action-button">Ver audiencias</a>
+                <a href="{{ route('resumen.index') }}" class="action-button">Ver resumen</a>
+            @elseif($userRole === 'secretario')
+                <a href="{{ route('audiencias.index') }}" class="action-button">Ver audiencias</a>
+                <a href="{{ route('resumen.index') }}" class="action-button">Ver resumen</a>
+            @else
+                <a href="{{ route('audiencias.index') }}" class="action-button">Ver audiencias</a>
+                <a href="{{ route('resumen.index') }}" class="action-button">Ver resumen</a>
+            @endif
+        </div>
+
+        <div class="info-grid" style="margin-top: 32px;">
+            @if (in_array($userRole, ['admin', 'oficinista']))
+                <div class="info-card">
+                    <h3>Acceso de edición</h3>
+                    <p>Puede crear y editar audiencias y resúmenes.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Atención</h3>
+                    <p>Los cambios quedan registrados en el sistema.</p>
+                </div>
+            @elseif($userRole === 'secretario')
+                <div class="info-card">
+                    <h3>Acceso de solo lectura</h3>
+                    <p>Solo puede ver listados de audiencias y resúmenes.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Restricción</h3>
+                    <p>No tiene permiso para crear ni editar datos.</p>
+                </div>
+            @else
+                <div class="info-card">
+                    <h3>Acceso</h3>
+                    <p>Debe contactarse con el administrador si su rol no es válido.</p>
+                </div>
+            @endif
+        </div>
+    </section>
+@endsection
