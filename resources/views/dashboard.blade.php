@@ -15,6 +15,9 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #eef2ff;
             color: #1f2937;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         .topbar {
@@ -187,6 +190,67 @@
             border: 1px solid #c3e6cb;
         }
 
+        .main {
+            max-width: 1400px;
+            margin: 30px auto 0;
+            padding: 0 24px;
+            position: relative;
+            flex: 1;
+        }
+
+        .watermark {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0.15;
+            z-index: 0;
+        }
+
+        .footer-franja {
+            width: 100vw;
+            max-width: 100%;
+            margin-left: calc(50% - 50vw);
+            margin-top: 28px;
+        }
+
+        .footer-franja img {
+            width: 100%;
+            display: block;
+        }
+
+        .watermark img {
+            width: 520px;
+            max-width: 80%;
+        }
+
+        .hero {
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+            border-radius: 28px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 28px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-franja {
+            margin-top: 28px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .footer-franja img {
+            width: 100%;
+            max-width: 1400px;
+            border-radius: 20px;
+            display: block;
+        }
+
         @media (max-width: 860px) {
             .hero {
                 padding: 30px;
@@ -229,6 +293,10 @@
     </header>
 
     <main class="main">
+        <div class="watermark">
+            <img src="{{ asset('img/fondo.png') }}" alt="Marca de agua">
+        </div>
+
         @if (session('success'))
             <div class="alert">{{ session('success') }}</div>
         @endif
@@ -254,9 +322,11 @@
                     <p>{{ Auth::user()->role->tipo ?? 'N/A' }}</p>
                 </div>
             </div>
-
-           
         </section>
     </main>
+
+    <div class="footer-franja">
+        <img src="{{ asset('img/franja.png') }}" alt="Franja decorativa">
+    </div>
 </body>
 </html>
