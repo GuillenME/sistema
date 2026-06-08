@@ -1,115 +1,196 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro - Sistema</title>
+    <title>Registro - Agenda JCTE Ocosingo 2026</title>
+
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f5f5;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
         }
+
         .container {
-            background: white;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
             width: 100%;
-            max-width: 500px;
+            max-width: 1500px;
+            background: #fff;
+            border: 3px solid #d8d8d8;
+            border-radius: 30px;
+            padding: 45px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
         }
-        h1 {
+
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 620px;
+            transform: translate(-50%, -50%);
+            opacity: 0.08;
+            pointer-events: none;
+        }
+
+        .heading {
             text-align: center;
-            color: #333;
-            margin-bottom: 30px;
-            font-size: 28px;
+            margin-bottom: 35px;
         }
+
+        .heading img {
+            width: 200px;
+            margin-bottom: 3px;
+        }
+
+        .heading h1 {
+            color: #780c16;
+            font-size: 1.8  rem;
+            line-height: 1.05;
+            margin-bottom: 1px;
+        }
+
+        .heading h2 {
+            color: #780c16;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
-        label {
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .form-full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
             display: block;
+            text-align: left;
+            font-size: 1.05rem;
+            font-weight: bold;
+            color: #654726;
             margin-bottom: 8px;
-            color: #555;
-            font-weight: 500;
         }
-        input, select {
+
+        .form-group input,
+        .form-group select {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            height: 48px;
+            border: 4px solid #654726;
+            border-radius: 40px;
+            padding: 0 15px;
             font-size: 14px;
-            transition: border-color 0.3s;
-            font-family: inherit;
         }
-        input:focus, select:focus {
+
+        .form-group input:focus,
+        .form-group select:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #a35a31;
         }
-        .error {
-            color: #dc3545;
-            font-size: 13px;
-            margin-top: 5px;
-        }
-        button {
+
+        .btn-submit {
+            display: block;
             width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #a35a31;
             color: white;
             border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: 600;
+            border-radius: 40px;
+            padding: 16px 0;
+            font-size: 1.2rem;
+            font-weight: bold;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: background 0.3s, transform 0.3s;
         }
-        button:hover {
+
+        .btn-submit:hover {
+            background: #874725;
             transform: translateY(-2px);
         }
+
+        .alert {
+            padding: 14px;
+            border-radius: 14px;
+            margin-bottom: 24px;
+            background: #ffe6e6;
+            color: #b30000;
+            border: 1px solid #ffbcbc;
+        }
+
         .login-link {
             text-align: center;
             margin-top: 20px;
             color: #666;
+            font-size: 1rem;
         }
+
         .login-link a {
-            color: #667eea;
+            color: #780c16;
+            font-weight: bold;
             text-decoration: none;
-            font-weight: 600;
         }
+
         .login-link a:hover {
             text-decoration: underline;
         }
-        .alert {
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-        .alert-success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+
+        @media (max-width: 760px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            .heading h1 {
+                font-size: 2.4rem;
+            }
+
+            .heading h2 {
+                font-size: 1.7rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group label {
+                font-size: 1.25rem;
+            }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
-        <h1>Crear Cuenta</h1>
+        <img src="{{ asset('img/fondo.png') }}" alt="Marca de agua" class="watermark">
+
+        <div class="heading">
+            <img src="{{ asset('img/logo2.png') }}" alt="Logo Agenda JCTE">
+            <h1>Agenda JCTE</h1>
+            <h2>Ocosingo 2026</h2>
+        </div>
 
         @if ($errors->any())
-            <div class="alert" style="background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;">
+            <div class="alert">
                 <strong>Errores:</strong>
-                <ul style="margin-left: 20px; margin-top: 10px;">
+                <ul style="margin-top: 12px; margin-left: 18px;">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
@@ -117,43 +198,28 @@
             </div>
         @endif
 
-        <form action="{{ route('auth.store') }}" method="POST">
+        <form action="{{ route('auth.store') }}" method="POST" class="form-row">
             @csrf
-            
+
             <div class="form-group">
-                <label for="name">Nombre Completo:</label>
+                <label for="name">Nombre Completo</label>
                 <input type="text" id="name" name="name" value="{{ old('name') }}" required>
-                @error('name')
-                    <div class="error">{{ $message }}</div>
-                @enderror
             </div>
 
             <div class="form-group">
-                <label for="username">Usuario:</label>
+                <label for="username">Usuario</label>
                 <input type="text" id="username" name="username" value="{{ old('username') }}" required>
-                @error('username')
-                    <div class="error">{{ $message }}</div>
-                @enderror
             </div>
 
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" value="{{ old('email') }}" required>
-                @error('email')
-                    <div class="error">{{ $message }}</div>
-                @enderror
-            </div>
+            
 
             <div class="form-group">
-                <label for="puesto">Puesto:</label>
+                <label for="puesto">Puesto</label>
                 <input type="text" id="puesto" name="puesto" value="{{ old('puesto') }}" required>
-                @error('puesto')
-                    <div class="error">{{ $message }}</div>
-                @enderror
             </div>
 
             <div class="form-group">
-                <label for="roles_id">Rol:</label>
+                <label for="roles_id">Rol</label>
                 <select id="roles_id" name="roles_id" required>
                     <option value="">Selecciona un rol</option>
                     @foreach (\App\Models\Role::all() as $role)
@@ -162,25 +228,21 @@
                         </option>
                     @endforeach
                 </select>
-                @error('roles_id')
-                    <div class="error">{{ $message }}</div>
-                @enderror
             </div>
 
             <div class="form-group">
-                <label for="password">Contraseña:</label>
+                <label for="password">Contraseña</label>
                 <input type="password" id="password" name="password" required>
-                @error('password')
-                    <div class="error">{{ $message }}</div>
-                @enderror
             </div>
 
             <div class="form-group">
-                <label for="password_confirmation">Confirmar Contraseña:</label>
+                <label for="password_confirmation">Confirmar Contraseña</label>
                 <input type="password" id="password_confirmation" name="password_confirmation" required>
             </div>
 
-            <button type="submit">Crear Cuenta</button>
+            <div class="form-full">
+                <button type="submit" class="btn-submit">Crear Cuenta</button>
+            </div>
         </form>
 
         <div class="login-link">
@@ -188,4 +250,5 @@
         </div>
     </div>
 </body>
+
 </html>

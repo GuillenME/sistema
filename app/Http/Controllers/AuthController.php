@@ -27,7 +27,7 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        if (Auth::attempt(['username' => $credentials['username'], 'password' => $credentials['password']])) {
+        if (Auth::attempt(['usuario' => $credentials['username'], 'password' => $credentials['password']])) {
             $request->session()->regenerate();
             return redirect()->intended('/dashboard')->with('success', '¡Bienvenido!');
         }
@@ -52,16 +52,21 @@ class AuthController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:users,username',
-            'email' => 'required|string|email|max:255|unique:users',
+            'username' => 'required|string|max:255|unique:usuarios,usuario',
             'password' => 'required|string|min:8|confirmed',
             'puesto' => 'required|string|max:255',
             'roles_id' => 'required|integer|exists:roles,id',
         ]);
 
-        $validated['password'] = Hash::make($validated['password']);
+        $userData = [
+            'nombre' => $validated['name'],
+            'usuario' => $validated['username'],
+            'contrasena' => Hash::make($validated['password']),
+            'puesto' => $validated['puesto'],
+            'roles_id' => $validated['roles_id'],
+        ];
 
-        User::create($validated);
+        User::create($userData);
 
         return redirect('/login')->with('success', '¡Registro exitoso! Por favor inicia sesión.');
     }

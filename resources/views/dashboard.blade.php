@@ -3,140 +3,260 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Sistema</title>
+    <title>Agenda JCTE Ocosingo 2026</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f5f5;
+            background: #eef2ff;
+            color: #1f2937;
         }
-        .navbar {
-            background: linear-gradient(135deg, #ffffff 0%, #ffffff 100%);
-            color: white;
-            padding: 20px 40px;
+
+        .topbar {
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+        }
+
+        .topbar-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 18px 28px;
             display: flex;
+            flex-wrap: wrap;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
+            gap: 16px;
         }
-        .navbar h2 {
-            font-size: 24px;
+
+        .brand {
+            font-size: 1.15rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: #111827;
         }
-        .user-info {
+
+        .nav-links {
             display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
             align-items: center;
-            gap: 20px;
         }
-        .logout-btn {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 1px solid white;
-            padding: 8px 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s;
+
+        .nav-links a {
+            color: #4b5563;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 10px 8px;
+            border-radius: 999px;
+            transition: background 0.2s, color 0.2s;
         }
+
+        .nav-links a:hover {
+            background: #e0e7ff;
+            color: #1e3a8a;
+        }
+
+        .logout-btn {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 700;
+            transition: background 0.2s;
+        }
+
         .logout-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: #b91c1c;
         }
-        .container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
+
+        .main {
+            max-width: 1400px;
+            margin: 30px auto 50px;
+            padding: 0 24px;
         }
-        .welcome-card {
-            background: white;
+
+        .hero {
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+            border-radius: 28px;
             padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 40px;
+            box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 28px;
         }
-        .welcome-card h1 {
-            color: #333;
-            margin-bottom: 20px;
+
+        .hero-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 24px;
+            align-items: center;
         }
-        .welcome-card p {
-            color: #666;
-            line-height: 1.6;
+
+        .hero-title {
+            max-width: 700px;
         }
+
+        .hero-title h1 {
+            font-size: 2.6rem;
+            line-height: 1.05;
+            color: #111827;
+            margin-bottom: 14px;
+        }
+
+        .hero-title p {
+            font-size: 1rem;
+            color: #4b5563;
+            line-height: 1.8;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .stat-card {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 24px;
+            padding: 26px;
+            min-height: 130px;
+        }
+
+        .stat-card h3 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: #4f46e5;
+            margin-bottom: 12px;
+        }
+
+        .stat-card p {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #111827;
+        }
+
         .info-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 20px;
-            margin-top: 30px;
+            margin-top: 24px;
         }
+
         .info-card {
-            background: #f9f9f9;
-            padding: 20px;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 24px;
+            padding: 24px;
+            min-height: 140px;
         }
+
         .info-card h3 {
-            color: #667eea;
+            color: #4338ca;
             margin-bottom: 10px;
-            font-size: 14px;
+            font-size: 0.85rem;
             text-transform: uppercase;
+            letter-spacing: 0.08em;
         }
+
         .info-card p {
-            color: #333;
-            font-size: 18px;
-            font-weight: 600;
+            color: #111827;
+            font-size: 1.4rem;
+            font-weight: 700;
         }
+
         .alert {
             background: #d4edda;
             color: #155724;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
+            padding: 16px 18px;
+            border-radius: 14px;
+            margin-bottom: 24px;
             border: 1px solid #c3e6cb;
+        }
+
+        @media (max-width: 860px) {
+            .hero {
+                padding: 30px;
+            }
+
+            .hero-title h1 {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .topbar-inner {
+                justify-content: center;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="navbar">
-        <h2>Sistema</h2>
-        <div class="user-info">
-            <span>Hola, <strong>{{ Auth::user()->name }}</strong></span>
+    <header class="topbar">
+        <div class="topbar-inner">
+            <div class="brand">Agenda JCTE Ocosingo 2026</div>
+            <nav class="nav-links">
+                <a href="#">Jueces</a>
+                <a href="#">Psicólogos</a>
+                <a href="#">Traductor</a>
+                <a href="#">Audiencias</a>
+                <a href="#">Tipos de audiencias</a>
+                <a href="#">Delitos</a>
+                <a href="#">Resumen</a>
+            </nav>
             <form action="{{ route('auth.logout') }}" method="POST" style="display: inline;">
                 @csrf
-                <button type="submit" class="logout-btn">Cerrar Sesión</button>
+                <button type="submit" class="logout-btn">Cerrar sesión</button>
             </form>
         </div>
-    </div>
+    </header>
 
-    <div class="container">
+    <main class="main">
         @if (session('success'))
             <div class="alert">{{ session('success') }}</div>
         @endif
 
-        <div class="welcome-card">
-            <h1>¡Bienvenido, {{ Auth::user()->name }}!</h1>
-            <p>Has iniciado sesión correctamente en el sistema. Desde aquí puedes acceder a todas las funcionalidades disponibles según tu rol.</p>
-
-            <div class="info-grid">
-                <div class="info-card">
-                    <h3>Usuario</h3>
-                    <p>{{ Auth::user()->username }}</p>
+        <section class="hero">
+            <div class="hero-header">
+                <div class="hero-title">
+                    <h1>Bienvenido a Agenda JCTE Ocosingo 2026</h1>
                 </div>
-                <div class="info-card">
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Usuario</h3>
+                    <p>{{ Auth::user()->usuario }}</p>
+                </div>
+                <div class="stat-card">
                     <h3>Puesto</h3>
                     <p>{{ Auth::user()->puesto }}</p>
                 </div>
-                <div class="info-card">
+                <div class="stat-card">
                     <h3>Rol</h3>
                     <p>{{ Auth::user()->role->tipo ?? 'N/A' }}</p>
                 </div>
-                <div class="info-card">
-                    <h3>Email</h3>
-                    <p>{{ Auth::user()->email }}</p>
-                </div>
             </div>
-        </div>
-    </div>
+
+           
+        </section>
+    </main>
 </body>
 </html>

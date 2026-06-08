@@ -33,7 +33,7 @@
             position: relative;
             background: #fff;
             border: 3px solid #d8d8d8;
-            border-radius: 10px;
+            border-radius: 20px;
             min-height: 750px;
             display: flex;
             overflow: hidden;
