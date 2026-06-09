@@ -5,6 +5,7 @@ use App\Http\Controllers\AudienciaController;
 use App\Http\Controllers\DelitosController;
 use App\Http\Controllers\JuecesController;
 use App\Http\Controllers\TipoAudienciaController;
+use App\Http\Controllers\PsicologosController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -62,6 +63,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('admin/delitos', [DelitosController::class, 'index'])->name('admin.delitos');
     Route::get('admin/jueces', [JuecesController::class, 'index'])->name('admin.jueces');
     Route::get('admin/tipoaudiencias', [TipoAudienciaController::class, 'index'])->name('admin.tipoaudiencias');
+    Route::resource('psicologos', PsicologosController::class);
+    Route::get('admin/psicologos', [PsicologosController::class, 'index'])->name('admin.psicologos');
+
+
+    
 });
 
 // Ver listados -> admin, oficinista y secretario
@@ -72,9 +78,7 @@ Route::middleware(['auth', 'role:admin,oficinista,secretario'])->group(function 
 
 // Rutas solo para administradores
 Route::middleware(['auth', 'role:admin'])->group(function () {
-   
-    
-    Route::get('/admin/psicologos', function () { return 'Administrar psicólogos'; })->name('admin.psicologos');
+    //Route::get('/admin/psicologos', function () { return 'Administrar psicólogos'; })->name('admin.psicologos');
     Route::get('/admin/traductores', function () { return 'Administrar traductores'; })->name('admin.traductores');
     Route::get('/admin/usuarios', function () { return 'Administrar usuarios'; })->name('admin.usuarios');
     Route::get('/admin/roles', function () { return 'Administrar roles'; })->name('admin.roles');
