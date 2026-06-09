@@ -3,200 +3,148 @@
 @section('title', 'Dashboard')
 
 @push('styles')
-    .hero {
-        background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-        border-radius: 28px;
-        padding: 40px;
-        box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+    .dashboard-grid {
         display: grid;
-        grid-template-columns: 1fr;
-        gap: 28px;
-        position: relative;
-        z-index: 1;
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        gap: 18px;
     }
 
-    .hero-header {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        gap: 24px;
-        align-items: center;
-    }
-
-    .hero-title {
-        max-width: 700px;
-    }
-
-    .hero-title h1 {
-        font-size: 2.6rem;
-        line-height: 1.05;
-        color: #111827;
-        margin-bottom: 14px;
-    }
-
-    .hero-title p {
-        font-size: 1rem;
-        color: #4b5563;
-        line-height: 1.8;
-    }
-
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 20px;
-        margin-top: 10px;
-    }
-
-    .stat-card {
-        background: #f8fafc;
-        border: 1px solid #e5e7eb;
-        border-radius: 24px;
-        padding: 26px;
+    .dashboard-card {
+        background: var(--white);
+        border: 1px solid var(--gold);
+        box-shadow: 0 14px 32px rgba(89, 63, 38, 0.12);
+        padding: 24px;
         min-height: 130px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 
-    .stat-card h3 {
-        font-size: 0.8rem;
+    .dashboard-label {
+        color: var(--clay);
+        font-size: 0.78rem;
+        font-weight: 800;
         text-transform: uppercase;
-        letter-spacing: 0.12em;
-        color: #4f46e5;
-        margin-bottom: 12px;
     }
 
-    .stat-card p {
-        font-size: 1.75rem;
-        font-weight: 700;
-        color: #111827;
+    .dashboard-value {
+        color: var(--wine);
+        font-size: 1.6rem;
+        font-weight: 800;
+        margin-top: 14px;
+        overflow-wrap: anywhere;
     }
 
-    .info-grid {
+    .dashboard-actions {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+        gap: 12px;
+    }
+
+    .dashboard-info {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 20px;
-        margin-top: 24px;
+        gap: 18px;
     }
 
-    .info-card {
-        background: #ffffff;
-        border: 1px solid #e5e7eb;
-        border-radius: 24px;
-        padding: 24px;
-        min-height: 140px;
+    .info-panel {
+        background: var(--white);
+        border-left: 6px solid var(--wine);
+        box-shadow: inset 0 0 0 1px var(--gold);
+        padding: 22px;
     }
 
-    .info-card h3 {
-        color: #4338ca;
-        margin-bottom: 10px;
-        font-size: 0.85rem;
+    .info-panel h3 {
+        color: var(--wine);
+        font-size: 0.82rem;
+        font-weight: 800;
         text-transform: uppercase;
-        letter-spacing: 0.08em;
+        margin-bottom: 10px;
     }
 
-    .info-card p {
-        color: #111827;
-        font-size: 1.4rem;
+    .info-panel p {
+        color: var(--earth);
+        font-size: 1.1rem;
+        line-height: 1.6;
         font-weight: 700;
-    }
-
-    .action-buttons {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 16px;
-        margin-top: 24px;
-    }
-
-    .action-button {
-        background: #4f46e5;
-        color: white;
-        padding: 16px 22px;
-        border-radius: 18px;
-        text-decoration: none;
-        font-weight: 700;
-        min-width: 180px;
-        text-align: center;
-        transition: background 0.2s;
-    }
-
-    .action-button:hover {
-        background: #3730a3;
-    }
-
-    @media (max-width: 860px) {
-        .hero { padding: 30px; }
-        .hero-title h1 { font-size: 2.2rem; }
     }
 @endpush
 
 @section('content')
     @php $userRole = Auth::user()->role->tipo ?? ''; @endphp
 
-    <section class="hero">
-        <div class="hero-header">
-            <div class="hero-title">
-                <h1>Bienvenido a Agenda JCTE Ocosingo 2026</h1>
-                <p>Accede rápido a las acciones disponibles según tu rol en el sistema.</p>
+    <div class="page-shell">
+        <div class="page-header">
+            <div>
+                <div class="page-kicker">Inicio</div>
+                <h1 class="page-title">Agenda JCTE Ocosingo 2026</h1>
+                <p class="page-subtitle">Accede rapido a las acciones disponibles segun tu rol en el sistema.</p>
             </div>
         </div>
 
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h3>Usuario</h3>
-                <p>{{ Auth::user()->usuario }}</p>
+        <div class="dashboard-grid">
+            <div class="dashboard-card">
+                <div class="dashboard-label">Usuario</div>
+                <div class="dashboard-value">{{ Auth::user()->usuario }}</div>
             </div>
-            <div class="stat-card">
-                <h3>Puesto</h3>
-                <p>{{ Auth::user()->puesto }}</p>
+            <div class="dashboard-card">
+                <div class="dashboard-label">Puesto</div>
+                <div class="dashboard-value">{{ Auth::user()->puesto }}</div>
             </div>
-            <div class="stat-card">
-                <h3>Rol</h3>
-                <p>{{ $userRole ?: 'N/A' }}</p>
+            <div class="dashboard-card">
+                <div class="dashboard-label">Rol</div>
+                <div class="dashboard-value">{{ $userRole ?: 'N/A' }}</div>
             </div>
         </div>
 
-        <div class="action-buttons">
-            @if ($userRole === 'admin')
-                <a href="{{ route('audiencias.index') }}" class="action-button">Ver audiencias</a>
-                <a href="{{ route('resumen.index') }}" class="action-button">Ver resumen</a>
-                
-            @elseif($userRole === 'oficinista')
-                <a href="{{ route('audiencias.create') }}" class="action-button">Crear audiencia</a>
-                <a href="{{ route('resumen.create') }}" class="action-button">Crear resumen</a>
-                <a href="{{ route('audiencias.index') }}" class="action-button">Ver audiencias</a>
-                <a href="{{ route('resumen.index') }}" class="action-button">Ver resumen</a>
-            @elseif($userRole === 'secretario')
-                <a href="{{ route('audiencias.index') }}" class="action-button">Ver audiencias</a>
-                <a href="{{ route('resumen.index') }}" class="action-button">Ver resumen</a>
-            @else
-                <a href="{{ route('audiencias.index') }}" class="action-button">Ver audiencias</a>
-                <a href="{{ route('resumen.index') }}" class="action-button">Ver resumen</a>
-            @endif
+        <div class="panel" style="padding: 24px;">
+            <div class="dashboard-label" style="margin-bottom: 14px;">Accesos</div>
+            <div class="dashboard-actions">
+                @if ($userRole === 'admin')
+                    <a href="{{ route('audiencias.index') }}" class="btn-primary">Ver audiencias</a>
+                    <a href="{{ route('resumen.index') }}" class="btn-info">Ver resumen</a>
+                    <a href="{{ route('admin.jueces') }}" class="btn-secondary">Jueces</a>
+                    <a href="{{ route('admin.delitos') }}" class="btn-secondary">Delitos</a>
+                @elseif($userRole === 'oficinista')
+                    <a href="{{ route('audiencias.create') }}" class="btn-primary">Crear audiencia</a>
+                    <a href="{{ route('resumen.create') }}" class="btn-info">Crear resumen</a>
+                    <a href="{{ route('audiencias.index') }}" class="btn-secondary">Ver audiencias</a>
+                    <a href="{{ route('resumen.index') }}" class="btn-secondary">Ver resumen</a>
+                @elseif($userRole === 'secretario')
+                    <a href="{{ route('audiencias.index') }}" class="btn-primary">Ver audiencias</a>
+                    <a href="{{ route('resumen.index') }}" class="btn-info">Ver resumen</a>
+                @else
+                    <a href="{{ route('audiencias.index') }}" class="btn-primary">Ver audiencias</a>
+                    <a href="{{ route('resumen.index') }}" class="btn-info">Ver resumen</a>
+                @endif
+            </div>
         </div>
 
-        <div class="info-grid" style="margin-top: 32px;">
+        <div class="dashboard-info">
             @if (in_array($userRole, ['admin', 'oficinista']))
-                <div class="info-card">
-                    <h3>Acceso de edición</h3>
-                    <p>Puede crear y editar audiencias y resúmenes.</p>
+                <div class="info-panel">
+                    <h3>Acceso de edicion</h3>
+                    <p>Puede crear y editar audiencias y resumenes.</p>
                 </div>
-                <div class="info-card">
-                    <h3>Atención</h3>
+                <div class="info-panel">
+                    <h3>Atencion</h3>
                     <p>Los cambios quedan registrados en el sistema.</p>
                 </div>
             @elseif($userRole === 'secretario')
-                <div class="info-card">
+                <div class="info-panel">
                     <h3>Acceso de solo lectura</h3>
-                    <p>Solo puede ver listados de audiencias y resúmenes.</p>
+                    <p>Solo puede ver listados de audiencias y resumenes.</p>
                 </div>
-                <div class="info-card">
-                    <h3>Restricción</h3>
+                <div class="info-panel">
+                    <h3>Restriccion</h3>
                     <p>No tiene permiso para crear ni editar datos.</p>
                 </div>
             @else
-                <div class="info-card">
+                <div class="info-panel">
                     <h3>Acceso</h3>
-                    <p>Debe contactarse con el administrador si su rol no es válido.</p>
+                    <p>Debe contactarse con el administrador si su rol no es valido.</p>
                 </div>
             @endif
         </div>
-    </section>
+    </div>
 @endsection

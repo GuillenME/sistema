@@ -46,7 +46,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            opacity: .9;
+            opacity: .7;
             z-index: 1;
             pointer-events: none;
         }

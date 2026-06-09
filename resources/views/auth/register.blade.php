@@ -57,7 +57,7 @@
 
         .heading h1 {
             color: #780c16;
-            font-size: 1.8  rem;
+            font-size: 1.8rem;
             line-height: 1.05;
             margin-bottom: 1px;
         }
@@ -210,8 +210,6 @@
                 <label for="username">Usuario</label>
                 <input type="text" id="username" name="username" value="{{ old('username') }}" required>
             </div>
-
-            
 
             <div class="form-group">
                 <label for="puesto">Puesto</label>
