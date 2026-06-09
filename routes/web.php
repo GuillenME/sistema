@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AudienciaController;
+use App\Http\Controllers\DelitosController;
+use App\Http\Controllers\JuecesController;
+use App\Http\Controllers\TipoAudienciaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,7 +41,7 @@ Route::middleware('auth')->group(function () {
     })->name('dashboard');
 });
 
-// Ejemplos de rutas protegidas por rol
+
 // Crear/editar audiencias y resúmenes -> solo admin y oficinistas
 Route::middleware(['auth', 'role:admin,oficinista'])->group(function () {
     Route::get('/audiencias/create', [AudienciaController::class, 'create'])->name('audiencias.create');
@@ -46,6 +49,19 @@ Route::middleware(['auth', 'role:admin,oficinista'])->group(function () {
 
     Route::get('/resumen/create', function () { return 'Formulario crear resumen'; })->name('resumen.create');
     Route::post('/resumen', function () { return 'Guardar resumen'; })->name('resumen.store');
+});
+
+// Rutas de Delitos - acceso solo para admin
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::resource('delitos', DelitosController::class);
+    Route::resource('tipoaudiencias', TipoAudienciaController::class);
+    Route::resource('jueces', JuecesController::class)
+    ->parameters([
+        'jueces' => 'juez'
+    ]);Route::resource('jueces', JuecesController::class);
+    Route::get('admin/delitos', [DelitosController::class, 'index'])->name('admin.delitos');
+    Route::get('admin/jueces', [JuecesController::class, 'index'])->name('admin.jueces');
+    Route::get('admin/tipoaudiencias', [TipoAudienciaController::class, 'index'])->name('admin.tipoaudiencias');
 });
 
 // Ver listados -> admin, oficinista y secretario
@@ -56,9 +72,8 @@ Route::middleware(['auth', 'role:admin,oficinista,secretario'])->group(function 
 
 // Rutas solo para administradores
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin/jueces', function () { return 'Administrar jueces'; })->name('admin.jueces');
-    Route::get('/admin/tipo-audiencia', function () { return 'Administrar tipos de audiencia'; })->name('admin.tipo_audiencia');
-    Route::get('/admin/delitos', function () { return 'Administrar delitos'; })->name('admin.delitos');
+   
+    
     Route::get('/admin/psicologos', function () { return 'Administrar psicólogos'; })->name('admin.psicologos');
     Route::get('/admin/traductores', function () { return 'Administrar traductores'; })->name('admin.traductores');
     Route::get('/admin/usuarios', function () { return 'Administrar usuarios'; })->name('admin.usuarios');
