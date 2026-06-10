@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDelitosTable extends Migration
+class CreateImputadosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateDelitosTable extends Migration
      */
     public function up()
     {
-        Schema::create('delitos', function (Blueprint $table) {
+        Schema::create('imputados', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('delito', 45)->unique();
+            $table->string('nombre', 45);
+            $table->string('apellidos', 45);
         });
     }
 
@@ -26,6 +27,6 @@ class CreateDelitosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('delitos');
+        Schema::dropIfExists('imputados');
     }
 }

@@ -17,7 +17,6 @@ class Resumen extends Model
         'defensa',
         'fiscalia',
         'auxiliar',
-        'imputado',
         'victima',
         'plazo',
         'medida',

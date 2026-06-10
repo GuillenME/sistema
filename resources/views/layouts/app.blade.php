@@ -101,6 +101,7 @@
                     <a href="{{ route('audiencias.index') }}">Agendar Audiencias</a>
                     <a href="{{ route('admin.tipoaudiencias') }}">Tipo de audiencia</a>
                     <a href="{{ route('admin.delitos') }}">Delitos</a>
+                    <a href="{{ route('admin.imputados') }}">Imputados</a>
                     <a href="{{ route('admin.psicologos') }}">Psicólogos</a>
                     <a href="{{ route('admin.traductores') }}">Traductores</a>
                     <a href="{{ route('resumen.index') }}">Resumen</a>
@@ -110,6 +111,10 @@
                 @elseif($userRole === 'secretario')
                     <a href="{{ route('audiencias.index') }}">Audiencias</a>
                     <a href="{{ route('resumen.index') }}">Resumen</a>
+                @elseif($userRole === 'capturista_imputados')
+                    <a href="{{ route('audiencias.index') }}">Audiencias</a>
+                    <a href="{{ route('resumen.index') }}">Resumen</a>
+                    <a href="{{ route('imputados.index') }}">Imputados</a>
                 @endif
             </nav>
             <form action="{{ route('auth.logout') }}" method="POST" style="display: inline;">

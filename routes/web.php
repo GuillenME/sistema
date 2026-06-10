@@ -3,9 +3,11 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AudienciaController;
 use App\Http\Controllers\DelitosController;
+use App\Http\Controllers\ImputadosController;
 use App\Http\Controllers\JuecesController;
 use App\Http\Controllers\TipoAudienciaController;
 use App\Http\Controllers\PsicologosController;
+use App\Http\Controllers\TraductorController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -65,13 +67,34 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('admin/tipoaudiencias', [TipoAudienciaController::class, 'index'])->name('admin.tipoaudiencias');
     Route::resource('psicologos', PsicologosController::class);
     Route::get('admin/psicologos', [PsicologosController::class, 'index'])->name('admin.psicologos');
+    Route::resource('traductores', TraductorController::class)
+        ->parameters([
+            'traductores' => 'traductor'
+        ]);
+    Route::get('admin/traductores', [TraductorController::class, 'index'])->name('admin.traductores');
+    Route::get('admin/imputados', [ImputadosController::class, 'index'])->name('admin.imputados');
 
 
     
 });
 
-// Ver listados -> admin, oficinista y secretario
-Route::middleware(['auth', 'role:admin,oficinista,secretario'])->group(function () {
+// Imputados: admin administra; capturista_imputados solo consulta y agrega.
+Route::middleware(['auth', 'role:admin,capturista_imputados'])->group(function () {
+    Route::get('/imputados', [ImputadosController::class, 'index'])->name('imputados.index');
+    Route::get('/imputados/create', [ImputadosController::class, 'create'])->name('imputados.create');
+    Route::post('/imputados', [ImputadosController::class, 'store'])->name('imputados.store');
+    Route::get('/imputados/{imputado}', [ImputadosController::class, 'show'])->name('imputados.show');
+});
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/imputados/{imputado}/edit', [ImputadosController::class, 'edit'])->name('imputados.edit');
+    Route::put('/imputados/{imputado}', [ImputadosController::class, 'update'])->name('imputados.update');
+    Route::patch('/imputados/{imputado}', [ImputadosController::class, 'update']);
+    Route::delete('/imputados/{imputado}', [ImputadosController::class, 'destroy'])->name('imputados.destroy');
+});
+
+// Ver listados -> admin, oficinista, secretario y capturista de imputados
+Route::middleware(['auth', 'role:admin,oficinista,secretario,capturista_imputados'])->group(function () {
     Route::get('/audiencias', [AudienciaController::class, 'index'])->name('audiencias.index');
     Route::get('/resumen', function () { return 'Listado de resúmenes'; })->name('resumen.index');
 });
@@ -79,7 +102,6 @@ Route::middleware(['auth', 'role:admin,oficinista,secretario'])->group(function 
 // Rutas solo para administradores
 Route::middleware(['auth', 'role:admin'])->group(function () {
     //Route::get('/admin/psicologos', function () { return 'Administrar psicólogos'; })->name('admin.psicologos');
-    Route::get('/admin/traductores', function () { return 'Administrar traductores'; })->name('admin.traductores');
     Route::get('/admin/usuarios', function () { return 'Administrar usuarios'; })->name('admin.usuarios');
     Route::get('/admin/roles', function () { return 'Administrar roles'; })->name('admin.roles');
 });

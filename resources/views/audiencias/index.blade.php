@@ -26,10 +26,12 @@
                         <th>Hora</th>
                         <th>Delito</th>
                         <th>Tipo</th>
-                        <th>Juez</th>
+                        <th>Imputados</th>
+                        <th>Sala</th>
                         <th>Traductor</th>
                         <th>Psicologo</th>
-                        <th>Sala</th>
+                        <th>Juez</th>
+                        <th>Agendo</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,14 +43,22 @@
                             <td>{{ optional($audiencia->hora)->format('H:i') ?? $audiencia->hora ?? '-' }}</td>
                             <td>{{ optional($audiencia->delito)->delito ?? '-' }}</td>
                             <td>{{ optional($audiencia->tipoAudiencia)->tipo ?? '-' }}</td>
-                            <td>{{ optional($audiencia->juez)->nombre ?? '-' }}</td>
+                            <td>
+                                {{ $audiencia->imputados->map(function ($imputado) {
+                                    return trim($imputado->nombre . ' ' . $imputado->apellidos);
+                                })->implode(', ') ?: '-' }}
+                            </td>
+                            <td><span class="badge">{{ optional($audiencia->sala)->sala ?? '-' }}</span></td>
+
                             <td>{{ optional($audiencia->traductor)->nombres ?? '-' }}</td>
                             <td>{{ optional($audiencia->psicologo)->nombre ?? '-' }}</td>
-                            <td><span class="badge">{{ optional($audiencia->sala)->sala ?? '-' }}</span></td>
+                            <td>{{ optional($audiencia->juez)->nombre ?? '-' }}</td>
+
+                            <td>{{ optional($audiencia->creador)->nombre ?? '-' }}</td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="10">
+                            <td colspan="12">
                                 <div class="empty-state">
                                     <div class="empty-state-mark"></div>
                                     <h3>No hay audiencias registradas</h3>

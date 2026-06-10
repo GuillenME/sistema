@@ -113,6 +113,11 @@
                 @elseif($userRole === 'secretario')
                     <a href="{{ route('audiencias.index') }}" class="btn-primary">Ver audiencias</a>
                     <a href="{{ route('resumen.index') }}" class="btn-info">Ver resumen</a>
+                @elseif($userRole === 'capturista_imputados')
+                    <a href="{{ route('imputados.create') }}" class="btn-primary">Agregar imputado</a>
+                    <a href="{{ route('imputados.index') }}" class="btn-secondary">Ver imputados</a>
+                    <a href="{{ route('audiencias.index') }}" class="btn-secondary">Ver audiencias</a>
+                    <a href="{{ route('resumen.index') }}" class="btn-info">Ver resumen</a>
                 @else
                     <a href="{{ route('audiencias.index') }}" class="btn-primary">Ver audiencias</a>
                     <a href="{{ route('resumen.index') }}" class="btn-info">Ver resumen</a>
@@ -138,6 +143,15 @@
                 <div class="info-panel">
                     <h3>Restriccion</h3>
                     <p>No tiene permiso para crear ni editar datos.</p>
+                </div>
+            @elseif($userRole === 'capturista_imputados')
+                <div class="info-panel">
+                    <h3>Captura de imputados</h3>
+                    <p>Puede ver audiencias y resumenes, ademas de consultar y agregar imputados.</p>
+                </div>
+                <div class="info-panel">
+                    <h3>Restriccion</h3>
+                    <p>No tiene permiso para crear audiencias ni editar o eliminar imputados.</p>
                 </div>
             @else
                 <div class="info-panel">
