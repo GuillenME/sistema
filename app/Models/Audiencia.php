@@ -24,6 +24,7 @@ class Audiencia extends Model
         'psicologo_id',
         'salas_id',
         'creado_por',
+        'estado',
     ];
 
     protected $casts = [

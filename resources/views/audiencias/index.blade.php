@@ -3,6 +3,8 @@
 @section('title', 'Audiencias')
 
 @section('content')
+    @php $userRole = Auth::user()->role->tipo ?? ''; @endphp
+
     <div class="page-shell">
         <div class="page-header">
             <div>
@@ -11,7 +13,7 @@
                 <p class="page-subtitle">Listado general de audiencias registradas.</p>
             </div>
 
-            @if(in_array(Auth::user()->role->tipo, ['admin', 'oficinista']))
+            @if(in_array($userRole, ['admin', 'oficinista']))
                 <a href="{{ route('audiencias.create') }}" class="btn-primary">Nueva audiencia</a>
             @endif
         </div>
@@ -32,6 +34,10 @@
                         <th>Psicologo</th>
                         <th>Juez</th>
                         <th>Agendo</th>
+                        <th>Estado</th>
+                        @if($userRole === 'admin')
+                            <th style="width: 210px;">Acciones</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -55,10 +61,30 @@
                             <td>{{ optional($audiencia->juez)->nombre ?? '-' }}</td>
 
                             <td>{{ optional($audiencia->creador)->nombre ?? '-' }}</td>
+                            <td>
+                                <span class="badge">{{ $audiencia->estado ?? 'Programada' }}</span>
+                            </td>
+                            @if($userRole === 'admin')
+                                <td>
+                                    <div class="actions">
+                                        <a href="{{ route('audiencias.edit', $audiencia) }}" class="btn-secondary btn-sm">Modificar</a>
+
+                                        @if(($audiencia->estado ?? 'Programada') !== 'Diferida')
+                                            <form action="{{ route('audiencias.diferir', $audiencia) }}"
+                                                  method="POST"
+                                                  onsubmit="return confirm('Desea diferir esta audiencia?');">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit" class="btn-danger btn-sm">Diferir</button>
+                                            </form>
+                                        @endif
+                                    </div>
+                                </td>
+                            @endif
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="12">
+                            <td colspan="{{ $userRole === 'admin' ? 14 : 13 }}">
                                 <div class="empty-state">
                                     <div class="empty-state-mark"></div>
                                     <h3>No hay audiencias registradas</h3>

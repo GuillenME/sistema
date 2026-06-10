@@ -146,8 +146,19 @@ class AudienciaController extends Controller
         $audiencia->imputados()->sync($imputados);
 
         return redirect()
-            ->route('audiencias.show', $audiencia)
+            ->route('audiencias.index')
             ->with('success', 'Audiencia actualizada correctamente.');
+    }
+
+    public function diferir(Audiencia $audiencia)
+    {
+        $audiencia->update([
+            'estado' => 'Diferida',
+        ]);
+
+        return redirect()
+            ->route('audiencias.index')
+            ->with('success', 'Audiencia diferida correctamente.');
     }
 
     public function destroy(Audiencia $audiencia)
