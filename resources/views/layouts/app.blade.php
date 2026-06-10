@@ -63,10 +63,18 @@
         .nav-links {
             display: flex;
             align-items: center;
-            flex-wrap: wrap;
-            justify-content: flex-end;
             gap: 8px;
             flex: 1;
+            justify-content: center;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
         }
 
         .nav-links a,
@@ -571,20 +579,38 @@
             }
         }
 
-        @media (max-width: 900px) {
+        @media (max-width: 1200px) {
 
             .topbar-inner {
-                flex-direction: column;
-                align-items: center;
+                flex-wrap: wrap;
+            }
+
+            .menu-toggle {
+                display: block;
             }
 
             .nav-links {
-                justify-content: center;
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch;
+                margin-top: 15px;
+                flex-wrap: nowrap;
+            }
+
+            .nav-links.show {
+                display: flex;
+            }
+
+            .nav-links a {
+                text-align: center;
+                padding: 12px;
+                border-bottom: 1px solid rgba(255, 255, 255, .1);
             }
 
             .logout-btn {
                 width: 100%;
-                max-width: 220px;
+                margin-top: 10px;
             }
         }
 
@@ -596,8 +622,11 @@
     <header class="topbar">
         <div class="topbar-inner">
             <div class="brand">Agenda JCTE Ocosingo 2026</div>
+            <button class="menu-toggle" onclick="toggleMenu()">
+                ☰
+            </button>
             @php $userRole = Auth::user()->role->tipo ?? ''; @endphp
-            <nav class="nav-links">
+            <nav class="nav-links" id="navbarMenu">
                 <a href="{{ route('dashboard') }}">Inicio</a>
                 @if ($userRole === 'admin')
                     <a href="{{ route('admin.jueces') }}">Jueces</a>
@@ -642,6 +671,12 @@
     <div class="footer-franja">
         <img src="{{ asset('img/franja.png') }}" alt="Franja decorativa">
     </div>
+    <script>
+        function toggleMenu() {
+            document.getElementById('navbarMenu')
+                .classList.toggle('show');
+        }
+    </script>
 </body>
 
 </html>
