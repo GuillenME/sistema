@@ -10,20 +10,21 @@ class CheckRole
 {
     /**
      * Handle an incoming request.
-     * Accepts a comma-separated list of role names (as stored in `roles.tipo`).
+     * Accepts one or more role names (as stored in `roles.tipo`).
+     * Laravel passes each role as a separate middleware argument.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
-     * @param  string  $roles
+     * @param  string  ...$roles
      * @return mixed
      */
-    public function handle(Request $request, Closure $next, $roles)
+    public function handle(Request $request, Closure $next, ...$roles)
     {
         if (! Auth::check()) {
             return redirect()->route('auth.showLogin');
         }
 
-        $allowed = array_map('trim', explode(',', $roles));
+        $allowed = array_map('trim', $roles);
         $userRole = optional(Auth::user()->role)->tipo;
 
         if (in_array($userRole, $allowed, true)) {

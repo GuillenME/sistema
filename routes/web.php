@@ -84,6 +84,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 // Consultas -> admin, oficinista, secretario y capturista de imputados
 Route::middleware(['auth', 'role:admin,oficinista,secretario,capturista_imputados'])->group(function () {
+    Route::get('/audiencias/reporte/exportar', [AudienciaController::class, 'exportReport'])->name('audiencias.report.export');
+    Route::get('/audiencias/reporte/imprimir', [AudienciaController::class, 'printReport'])->name('audiencias.report.print');
+    Route::get('/audiencias/reporte', [AudienciaController::class, 'report'])->name('audiencias.report');
     Route::get('/audiencias', [AudienciaController::class, 'index'])->name('audiencias.index');
     Route::get('/resumen', [ResumenController::class, 'index'])->name('resumen.index');
     Route::get('/resumen/{resumen}', [ResumenController::class, 'show'])->name('resumen.show');

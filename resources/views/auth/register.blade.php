@@ -213,9 +213,22 @@
 
             <div class="form-group">
                 <label for="puesto">Puesto</label>
-                <input type="text" id="puesto" name="puesto" value="{{ old('puesto') }}" required>
+                <select id="puesto" name="puesto" required>
+                    <option value="">Selecciona un puesto</option>
+                    <option value="Secretario" {{ old('puesto') == 'Secretario' ? 'selected' : '' }}>
+                        Secretario
+                    </option>
+                    <option value="Oficinista" {{ old('puesto') == 'Oficinista' ? 'selected' : '' }}>
+                        Oficinista
+                    </option>
+                    <option value="Administrador" {{ old('puesto') == 'Administrador' ? 'selected' : '' }}>
+                        Administrador
+                    </option>
+                    <option value="Jefe de Causas" {{ old('puesto') == 'Jefe de Causas' ? 'selected' : '' }}>
+                        Jefe de Causas
+                    </option>
+                </select>
             </div>
-
             <div class="form-group">
                 <label for="roles_id">Rol</label>
                 <select id="roles_id" name="roles_id" required>

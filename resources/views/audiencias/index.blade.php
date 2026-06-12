@@ -13,9 +13,12 @@
                 <p class="page-subtitle">Listado general de audiencias registradas.</p>
             </div>
 
-            @if(in_array($userRole, ['admin', 'oficinista']))
-                <a href="{{ route('audiencias.create') }}" class="btn-primary">Nueva audiencia</a>
-            @endif
+            <div class="actions">
+                <a href="{{ route('audiencias.report') }}" class="btn-info">Generar reporte</a>
+                @if(in_array($userRole, ['admin', 'oficinista']))
+                    <a href="{{ route('audiencias.create') }}" class="btn-primary">Nueva audiencia</a>
+                @endif
+            </div>
         </div>
 
         <div class="panel table-wrapper">

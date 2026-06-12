@@ -103,6 +103,7 @@
                 @if ($userRole === 'admin')
                     <a href="{{ route('audiencias.index') }}" class="btn-primary">Ver audiencias</a>
                     <a href="{{ route('resumen.index') }}" class="btn-info">Ver resumen</a>
+                    <a href="{{ route('audiencias.report') }}" class="btn-secondary">Reporte audiencias</a>
                     <a href="{{ route('admin.jueces') }}" class="btn-secondary">Jueces</a>
                     <a href="{{ route('admin.delitos') }}" class="btn-secondary">Delitos</a>
                 @elseif($userRole === 'oficinista')
@@ -110,14 +111,17 @@
                     <a href="{{ route('resumen.create') }}" class="btn-info">Crear resumen</a>
                     <a href="{{ route('audiencias.index') }}" class="btn-secondary">Ver audiencias</a>
                     <a href="{{ route('resumen.index') }}" class="btn-secondary">Ver resumen</a>
+                    <a href="{{ route('audiencias.report') }}" class="btn-secondary">Reporte audiencias</a>
                 @elseif($userRole === 'secretario')
                     <a href="{{ route('audiencias.index') }}" class="btn-primary">Ver audiencias</a>
                     <a href="{{ route('resumen.index') }}" class="btn-info">Ver resumen</a>
+                    <a href="{{ route('audiencias.report') }}" class="btn-secondary">Reporte audiencias</a>
                 @elseif($userRole === 'capturista_imputados')
                     <a href="{{ route('imputados.create') }}" class="btn-primary">Agregar imputado</a>
                     <a href="{{ route('imputados.index') }}" class="btn-secondary">Ver imputados</a>
                     <a href="{{ route('audiencias.index') }}" class="btn-secondary">Ver audiencias</a>
                     <a href="{{ route('resumen.index') }}" class="btn-info">Ver resumen</a>
+                    <a href="{{ route('audiencias.report') }}" class="btn-secondary">Reporte audiencias</a>
                 @else
                     <a href="{{ route('audiencias.index') }}" class="btn-primary">Ver audiencias</a>
                     <a href="{{ route('resumen.index') }}" class="btn-info">Ver resumen</a>
