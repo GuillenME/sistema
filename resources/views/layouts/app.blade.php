@@ -408,19 +408,73 @@
             background: var(--gold);
         }
 
-        .pagination {
+        .pagination ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
             display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 24px;
-            color: var(--earth);
+            align-items: center;
+            gap: 6px;
         }
 
-        .pagination a,
-        .pagination span {
-            padding: 8px 12px;
+        .pagination li {
+            list-style: none;
+        }
+
+        .pagination {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .pagination nav {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+
+        .pagination span,
+        .pagination a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 40px;
+            height: 40px;
+            padding: 0 14px;
             border: 1px solid var(--gold);
+            border-radius: 8px;
+            background: white;
             color: var(--earth);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .pagination a:hover {
+            background: var(--gold);
+            color: var(--wine);
+        }
+
+        .pagination .active span,
+        .pagination [aria-current="page"] span {
+            background: var(--wine);
+            color: white;
+            border-color: var(--wine);
+        }
+
+        ;
+
+
+
+        .watermark img,
+        .footer-franja img {
+            width: 100%;
+        }
+
+        .pagination svg {
+            width: 16px !important;
+            height: 16px !important;
         }
 
         .form-container,
