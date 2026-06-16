@@ -12,15 +12,20 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $table = 'usuarios';
+    public $timestamps = false;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'nombre',
+        'usuario',
+        'contrasena',
+        'puesto',
+        'roles_id',
     ];
 
     /**
@@ -29,8 +34,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
-        'remember_token',
+        'contrasena',
     ];
 
     /**
@@ -39,6 +43,22 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        // no email verification field in this table
     ];
+
+    /**
+     * Get the password for authentication.
+     */
+    public function getAuthPassword()
+    {
+        return $this->contrasena;
+    }
+
+    /**
+     * Relación: Un usuario pertenece a un rol
+     */
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'roles_id');
+    }
 }
