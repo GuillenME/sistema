@@ -76,7 +76,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="auxiliar">Auxiliar</label>
+                    <label for="auxiliar">Auxiliar de sala</label>
                     <input type="text" id="auxiliar" name="auxiliar" value="{{ old('auxiliar', $resumen->auxiliar) }}"
                         maxlength="45">
                     @error('auxiliar')
@@ -85,7 +85,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="victima">Victima</label>
+                    <label for="victima">Victima(s)</label>
                     <input type="text" id="victima" name="victima" value="{{ old('victima', $resumen->victima) }}"
                         maxlength="45">
                     @error('victima')
@@ -94,7 +94,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="plazo">Plazo</label>
+                    <label for="plazo">Plazo de investigación</label>
                     <input type="text" id="plazo" name="plazo" value="{{ old('plazo', $resumen->plazo) }}"
                         maxlength="45">
                     @error('plazo')
@@ -103,14 +103,21 @@
                 </div>
 
                 <div class="form-group full">
-                    <label for="medida">Medida</label>
+                    <label for="medida">Medida cautelar</label>
                     <input type="text" id="medida" name="medida" value="{{ old('medida', $resumen->medida) }}"
                         maxlength="45">
                     @error('medida')
                         <div class="form-error">{{ $message }}</div>
                     @enderror
                 </div>
+                <div class="form-group full">
+                    <label for="hechos_ocurridos">Resumen de los hechos ocurridos</label>
+                    <textarea id="hechos_ocurridos" name="hechos_ocurridos" rows="6">{{ old('hechos_ocurridos', $resumen->hechos_ocurridos) }}</textarea>
 
+                    @error('hechos_ocurridos')
+                        <div class="form-error">{{ $message }}</div>
+                    @enderror
+                </div>
                 <div class="form-actions">
                     <button type="submit" class="btn-submit">Guardar cambios</button>
                     <a href="{{ route('resumen.show', $resumen) }}" class="btn-cancel">Cancelar</a>

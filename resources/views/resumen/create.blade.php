@@ -107,7 +107,15 @@
                         <div class="form-error">{{ $message }}</div>
                     @enderror
                 </div>
+                <div class="form-group full">
+                    <label for="hechos_ocurridos">Resumen de los hechos ocurridos</label>
+                    <textarea id="hechos_ocurridos" name="hechos_ocurridos" rows="6"
+                        placeholder="Describe los hechos ocurridos durante la audiencia...">{{ old('hechos_ocurridos') }}</textarea>
 
+                    @error('hechos_ocurridos')
+                        <div class="form-error">{{ $message }}</div>
+                    @enderror
+                </div>
                 <div class="form-actions">
                     <button type="submit" class="btn-submit">Guardar resumen</button>
                     <a href="{{ route('resumen.index') }}" class="btn-cancel">Cancelar</a>

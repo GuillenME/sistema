@@ -49,23 +49,28 @@
             </div>
 
             <div class="detail-field">
-                <div class="detail-label">Auxiliar</div>
+                <div class="detail-label">Auxiliar de sala</div>
                 <div class="detail-value">{{ $resumen->auxiliar ?? '-' }}</div>
             </div>
 
             <div class="detail-field">
-                <div class="detail-label">Victima</div>
+                <div class="detail-label">Victima(s)</div>
                 <div class="detail-value">{{ $resumen->victima ?? '-' }}</div>
             </div>
 
             <div class="detail-field">
-                <div class="detail-label">Plazo</div>
+                <div class="detail-label">Plazo de investigación</div>
                 <div class="detail-value">{{ $resumen->plazo ?? '-' }}</div>
             </div>
 
             <div class="detail-field">
-                <div class="detail-label">Medida</div>
+                <div class="detail-label">Medida cautelar</div>
                 <div class="detail-value">{{ $resumen->medida ?? '-' }}</div>
+            </div>
+
+            <div class="detail-field">
+                <div class="detail-label">Resumen de los hechos ocurridos</div>
+                <div class="detail-value">{{ $resumen->hechos_ocurridos ?? '-' }}</div>
             </div>
 
             <div class="detail-actions">

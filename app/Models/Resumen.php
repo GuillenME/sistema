@@ -21,6 +21,7 @@ class Resumen extends Model
         'victima',
         'plazo',
         'medida',
+        'hechos_ocurridos',
         'audiencias_id',
     ];
 

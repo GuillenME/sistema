@@ -90,6 +90,7 @@ class ResumenController extends Controller
             'auxiliar' => 'nullable|string|max:45',
             'victima' => 'nullable|string|max:45',
             'plazo' => 'nullable|string|max:45',
+            'hechos_ocurridos' => 'nullable|string',
             'medida' => 'nullable|string|max:45',
         ]);
     }
