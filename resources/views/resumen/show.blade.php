@@ -24,12 +24,15 @@
                 <div class="detail-value">
                     {{ optional($resumen->audiencia)->imputados
                         ? $resumen->audiencia->imputados->map(function ($imputado) {
-                            return trim($imputado->nombre . ' ' . $imputado->apellidos);
-                        })->implode(', ')
+                                return trim($imputado->nombre . ' ' . $imputado->apellidos);
+                            })->implode(', ')
                         : '-' }}
                 </div>
             </div>
-
+            <div class="detail-field">
+                <div class="detail-label">Hora inicio</div>
+                <div class="detail-value">{{ optional($resumen->hora_inicio)->format('H:i') ?? '-' }}</div>
+            </div>
             <div class="detail-field">
                 <div class="detail-label">Hora final</div>
                 <div class="detail-value">{{ optional($resumen->hora_final)->format('H:i') ?? '-' }}</div>
@@ -66,11 +69,10 @@
             </div>
 
             <div class="detail-actions">
-                @if(in_array($userRole, ['admin', 'oficinista']))
+                @if (in_array($userRole, ['admin', 'oficinista']))
                     <a href="{{ route('resumen.edit', $resumen) }}" class="btn-edit">Editar</a>
-                    <form action="{{ route('resumen.destroy', $resumen) }}"
-                          method="POST"
-                          onsubmit="return confirm('Desea eliminar este resumen? Esta accion no se puede deshacer.');">
+                    <form action="{{ route('resumen.destroy', $resumen) }}" method="POST"
+                        onsubmit="return confirm('Desea eliminar este resumen? Esta accion no se puede deshacer.');">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn-delete">Eliminar</button>

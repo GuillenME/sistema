@@ -27,6 +27,7 @@
                             <th>Audiencia</th>
                             <th>Fecha</th>
                             <th>Imputados</th>
+                            <th>Hora inicio</th>
                             <th>Hora final</th>
                             <th>Defensa</th>
                             <th>Fiscalia</th>
@@ -54,6 +55,7 @@
                                         })->implode(', ')
                                         : '-' }}
                                 </td>
+                                <td>{{ optional($resumen->hora_inicio)->format('H:i') ?? '-' }}</td>
                                 <td>{{ optional($resumen->hora_final)->format('H:i') ?? '-' }}</td>
                                 <td>{{ $resumen->defensa ?? '-' }}</td>
                                 <td>{{ $resumen->fiscalia ?? '-' }}</td>

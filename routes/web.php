@@ -32,7 +32,14 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'role:admin,oficinista'])->group(function () {
     Route::get('/audiencias/create', [AudienciaController::class, 'create'])->name('audiencias.create');
     Route::post('/audiencias', [AudienciaController::class, 'store'])->name('audiencias.store');
-
+    Route::post(
+        '/delitos/ajax',
+        [DelitosController::class, 'storeAjax']
+    )->name('delitos.ajax.store');
+    Route::post(
+        '/imputados/ajax',
+        [ImputadosController::class, 'storeAjax']
+    )->name('imputados.ajax.store');
     Route::get('/resumen/create', [ResumenController::class, 'create'])->name('resumen.create');
     Route::post('/resumen', [ResumenController::class, 'store'])->name('resumen.store');
     Route::get('/resumen/{resumen}/edit', [ResumenController::class, 'edit'])->name('resumen.edit');
@@ -50,6 +57,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 // Catalogos -> solo admin
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('delitos', DelitosController::class);
+    // Route::post('/delitos/ajax', [DelitosController::class, 'storeAjax'])
+    //     ->name('delitos.ajax.store');
     Route::resource('tipoaudiencias', TipoAudienciaController::class);
     Route::resource('jueces', JuecesController::class)->parameters([
         'jueces' => 'juez',
@@ -94,6 +103,10 @@ Route::middleware(['auth', 'role:admin,oficinista,secretario,capturista_imputado
 
 // Rutas solo para administradores
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin/usuarios', function () { return 'Administrar usuarios'; })->name('admin.usuarios');
-    Route::get('/admin/roles', function () { return 'Administrar roles'; })->name('admin.roles');
+    Route::get('/admin/usuarios', function () {
+        return 'Administrar usuarios';
+    })->name('admin.usuarios');
+    Route::get('/admin/roles', function () {
+        return 'Administrar roles';
+    })->name('admin.roles');
 });

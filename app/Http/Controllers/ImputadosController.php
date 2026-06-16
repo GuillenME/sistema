@@ -64,4 +64,19 @@ class ImputadosController extends Controller
 
         return redirect()->route('imputados.index')->with('success', 'Imputado eliminado exitosamente');
     }
+
+    public function storeAjax(Request $request)
+    {
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'apellidos' => 'required|string|max:255',
+        ]);
+
+        $imputado = Imputado::create([
+            'nombre' => $request->nombre,
+            'apellidos' => $request->apellidos,
+        ]);
+
+        return response()->json($imputado);
+    }
 }

@@ -15,7 +15,7 @@
 
             <div class="actions">
                 <a href="{{ route('audiencias.report') }}" class="btn-info">Generar reporte</a>
-                @if(in_array($userRole, ['admin', 'oficinista']))
+                @if (in_array($userRole, ['admin', 'oficinista']))
                     <a href="{{ route('audiencias.create') }}" class="btn-primary">Nueva audiencia</a>
                 @endif
             </div>
@@ -38,7 +38,7 @@
                         <th>Juez</th>
                         <th>Agendo</th>
                         <th>Estado</th>
-                        @if($userRole === 'admin')
+                        @if ($userRole === 'admin')
                             <th style="width: 210px;">Acciones</th>
                         @endif
                     </tr>
@@ -49,17 +49,19 @@
                             <td><strong>#{{ $audiencia->id }}</strong></td>
                             <td><span class="text-strong">{{ $audiencia->causa }}</span></td>
                             <td>{{ optional($audiencia->fecha)->format('Y-m-d') ?? '-' }}</td>
-                            <td>{{ optional($audiencia->hora)->format('H:i') ?? $audiencia->hora ?? '-' }}</td>
+                            <td>{{ optional($audiencia->hora)->format('H:i') ?? ($audiencia->hora ?? '-') }}</td>
                             <td>{{ optional($audiencia->delito)->delito ?? '-' }}</td>
                             <td>{{ optional($audiencia->tipoAudiencia)->tipo ?? '-' }}</td>
                             <td>
                                 {{ $audiencia->imputados->map(function ($imputado) {
-                                    return trim($imputado->nombre . ' ' . $imputado->apellidos);
-                                })->implode(', ') ?: '-' }}
+                                        return trim($imputado->nombre . ' ' . $imputado->apellidos);
+                                    })->implode(', ') ?:
+                                    '-' }}
                             </td>
                             <td><span class="badge">{{ optional($audiencia->sala)->sala ?? '-' }}</span></td>
-
-                            <td>{{ optional($audiencia->traductor)->nombres ?? '-' }}</td>
+                            <td>
+                                {{ $audiencia->traductor ? $audiencia->traductor->lengua . ' - ' . $audiencia->traductor->nombres : '-' }}
+                            </td>
                             <td>{{ optional($audiencia->psicologo)->nombre ?? '-' }}</td>
                             <td>{{ optional($audiencia->juez)->nombre ?? '-' }}</td>
 
@@ -67,15 +69,15 @@
                             <td>
                                 <span class="badge">{{ $audiencia->estado ?? 'Programada' }}</span>
                             </td>
-                            @if($userRole === 'admin')
+                            @if ($userRole === 'admin')
                                 <td>
                                     <div class="actions">
-                                        <a href="{{ route('audiencias.edit', $audiencia) }}" class="btn-secondary btn-sm">Modificar</a>
+                                        <a href="{{ route('audiencias.edit', $audiencia) }}"
+                                            class="btn-secondary btn-sm">Modificar</a>
 
-                                        @if(($audiencia->estado ?? 'Programada') !== 'Diferida')
-                                            <form action="{{ route('audiencias.diferir', $audiencia) }}"
-                                                  method="POST"
-                                                  onsubmit="return confirm('Desea diferir esta audiencia?');">
+                                        @if (($audiencia->estado ?? 'Programada') !== 'Diferida')
+                                            <form action="{{ route('audiencias.diferir', $audiencia) }}" method="POST"
+                                                onsubmit="return confirm('Desea diferir esta audiencia?');">
                                                 @csrf
                                                 @method('PATCH')
                                                 <button type="submit" class="btn-danger btn-sm">Diferir</button>

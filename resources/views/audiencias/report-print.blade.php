@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,7 +46,8 @@
             font-size: 0.82rem;
         }
 
-        th, td {
+        th,
+        td {
             border: 1px solid #ccc;
             padding: 8px;
             text-align: left;
@@ -86,6 +88,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="toolbar">
         <button type="button" onclick="window.print()">Imprimir / Guardar PDF</button>
@@ -103,28 +106,28 @@
     @php
         $filterLabels = [];
 
-        if (! empty($filters['fecha_desde'])) {
+        if (!empty($filters['fecha_desde'])) {
             $filterLabels[] = 'Desde: ' . $filters['fecha_desde'];
         }
 
-        if (! empty($filters['fecha_hasta'])) {
+        if (!empty($filters['fecha_hasta'])) {
             $filterLabels[] = 'Hasta: ' . $filters['fecha_hasta'];
         }
 
-        if (! empty($filters['estado'])) {
+        if (!empty($filters['estado'])) {
             $filterLabels[] = 'Estado: ' . $filters['estado'];
         }
 
-        if (! empty($filters['modalidad'])) {
+        if (!empty($filters['modalidad'])) {
             $filterLabels[] = 'Modalidad: ' . $filters['modalidad'];
         }
     @endphp
 
-    @if(count($filterLabels) > 0)
+    @if (count($filterLabels) > 0)
         <p><strong>Filtros:</strong> {{ implode(' | ', $filterLabels) }}</p>
     @endif
 
-    @if($audiencias->count() > 0)
+    @if ($audiencias->count() > 0)
         <table>
             <thead>
                 <tr>
@@ -138,26 +141,41 @@
                     <th>Sala</th>
                     <th>Modalidad</th>
                     <th>Juez</th>
+                    <th>Traductor</th>
+                    <th>Psicólogo</th>
                     <th>Estado</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($audiencias as $audiencia)
+                @foreach ($audiencias as $audiencia)
                     <tr>
                         <td>{{ $audiencia->id }}</td>
                         <td>{{ $audiencia->causa }}</td>
                         <td>{{ optional($audiencia->fecha)->format('Y-m-d') ?? '-' }}</td>
-                        <td>{{ optional($audiencia->hora)->format('H:i') ?? $audiencia->hora ?? '-' }}</td>
+                        <td>{{ optional($audiencia->hora)->format('H:i') ?? ($audiencia->hora ?? '-') }}</td>
                         <td>{{ optional($audiencia->delito)->delito ?? '-' }}</td>
                         <td>{{ optional($audiencia->tipoAudiencia)->tipo ?? '-' }}</td>
                         <td>
                             {{ $audiencia->imputados->map(function ($imputado) {
-                                return trim($imputado->nombre . ' ' . $imputado->apellidos);
-                            })->implode(', ') ?: '-' }}
+                                    return trim($imputado->nombre . ' ' . $imputado->apellidos);
+                                })->implode(', ') ?:
+                                '-' }}
                         </td>
                         <td>{{ optional($audiencia->sala)->sala ?? '-' }}</td>
                         <td>{{ $audiencia->modalidad ?? '-' }}</td>
                         <td>{{ optional($audiencia->juez)->nombre ?? '-' }}</td>
+                        <td>
+                            @if ($audiencia->traductor)
+                                {{ $audiencia->traductor->nombres }}
+                                @if ($audiencia->traductor->lengua)
+                                    - {{ $audiencia->traductor->lengua }}
+                                @endif
+                            @else
+                                -
+                            @endif
+                        </td>
+
+                        <td>{{ optional($audiencia->psicologo)->nombre ?? '-' }}</td>
                         <td>{{ $audiencia->estado ?? 'Programada' }}</td>
                     </tr>
                 @endforeach
@@ -167,4 +185,5 @@
         <p>No hay audiencias con los filtros seleccionados.</p>
     @endif
 </body>
+
 </html>

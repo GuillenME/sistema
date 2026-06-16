@@ -76,5 +76,17 @@ class DelitosController extends Controller
         $delito->delete();
         return redirect()->route('delitos.index')->with('success', 'Delito eliminado exitosamente');
     }
-}
 
+    public function storeAjax(Request $request)
+    {
+        $request->validate([
+            'delito' => 'required|string|max:255|unique:delitos,delito'
+        ]);
+
+        $delito = Delito::create([
+            'delito' => $request->delito
+        ]);
+
+        return response()->json($delito);
+    }
+}

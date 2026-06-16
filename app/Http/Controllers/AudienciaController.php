@@ -80,7 +80,7 @@ class AudienciaController extends Controller
         return redirect()->route('audiencias.index')->with('success', 'Audiencia guardada correctamente.');
     }
 
-        public function show(Audiencia $audiencia)
+    public function show(Audiencia $audiencia)
     {
         $audiencia->load([
             'delito',
@@ -315,7 +315,12 @@ class AudienciaController extends Controller
             optional($audiencia->sala)->sala ?? '-',
             $audiencia->modalidad ?? '-',
             optional($audiencia->juez)->nombre ?? '-',
-            optional($audiencia->traductor)->nombres ?? '-',
+            optional($audiencia->traductor)->nombres
+                ? optional($audiencia->traductor)->nombres .
+                (optional($audiencia->traductor)->lengua
+                    ? ' - ' . optional($audiencia->traductor)->lengua
+                    : '')
+                : '-',
             optional($audiencia->psicologo)->nombre ?? '-',
             optional($audiencia->creador)->nombre ?? '-',
             $audiencia->estado ?? 'Programada',

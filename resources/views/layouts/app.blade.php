@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Agenda JCTE Ocosingo 2026')</title>
     <style>
         :root {
@@ -636,16 +637,16 @@
                     <a href="{{ route('admin.imputados') }}">Imputados</a>
                     <a href="{{ route('admin.psicologos') }}">Psicólogos</a>
                     <a href="{{ route('admin.traductores') }}">Traductores</a>
-                    <a href="{{ route('resumen.index') }}">Resumen</a>
+                    <a href="{{ route('resumen.index') }}">Resumen de audiencia </a>
                 @elseif($userRole === 'oficinista')
                     <a href="{{ route('audiencias.index') }}">Agendar Audiencias</a>
                     <a href="{{ route('resumen.index') }}">Resumen</a>
                 @elseif($userRole === 'secretario')
                     <a href="{{ route('audiencias.index') }}">Audiencias</a>
-                    <a href="{{ route('resumen.index') }}">Resumen</a>
+                    <a href="{{ route('resumen.index') }}">Resumen de audiencia </a>
                 @elseif($userRole === 'capturista_imputados')
                     <a href="{{ route('audiencias.index') }}">Audiencias</a>
-                    <a href="{{ route('resumen.index') }}">Resumen</a>
+                    <a href="{{ route('resumen.index') }}">Resumen de audiencia </a>
                     <a href="{{ route('imputados.index') }}">Imputados</a>
                 @endif
             </nav>

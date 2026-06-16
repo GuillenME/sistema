@@ -83,6 +83,7 @@ class ResumenController extends Controller
     {
         return $request->validate([
             'audiencias_id' => 'required|exists:audiencias,id',
+            'hora_inicio' => 'nullable|date_format:H:i',
             'hora_final' => 'nullable|date_format:H:i',
             'defensa' => 'nullable|string|max:45',
             'fiscalia' => 'nullable|string|max:45',
