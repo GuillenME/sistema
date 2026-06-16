@@ -13,7 +13,8 @@
 
                 <div class="form-group">
                     <label for="nombre">Nombre *</label>
-                    <input type="text" id="nombre" name="nombre" placeholder="Ej: Juan" value="{{ old('nombre') }}" required>
+                    <input type="text" id="nombre" name="nombre" placeholder="Ej: Juan" value="{{ old('nombre') }}"
+                        required>
                     @error('nombre')
                         <div class="form-error">{{ $message }}</div>
                     @enderror
@@ -21,12 +22,22 @@
 
                 <div class="form-group">
                     <label for="apellidos">Apellidos *</label>
-                    <input type="text" id="apellidos" name="apellidos" placeholder="Ej: Garcia Lopez" value="{{ old('apellidos') }}" required>
+                    <input type="text" id="apellidos" name="apellidos" placeholder="Ej: Garcia Lopez"
+                        value="{{ old('apellidos') }}" required>
                     @error('apellidos')
                         <div class="form-error">{{ $message }}</div>
                     @enderror
                 </div>
+                <div class="form-group">
+                    <label for="fecha_registro">Fecha de registro *</label>
 
+                    <input type="date" id="fecha_registro" name="fecha_registro" value="{{ old('fecha_registro') }}"
+                        required>
+
+                    @error('fecha_registro')
+                        <div class="form-error">{{ $message }}</div>
+                    @enderror
+                </div>
                 <div class="form-actions">
                     <button type="submit" class="btn-submit">Crear imputado</button>
                     <a href="{{ route('imputados.index') }}" class="btn-cancel">Cancelar</a>

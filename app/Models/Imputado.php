@@ -15,6 +15,7 @@ class Imputado extends Model
     protected $fillable = [
         'nombre',
         'apellidos',
+        'fecha_registro',
     ];
 
     /**

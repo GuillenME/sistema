@@ -16,8 +16,10 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class AudienciaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $buscar = $request->buscar;
+
         $audiencias = Audiencia::with([
             'delito',
             'tipoAudiencia',
@@ -27,9 +29,25 @@ class AudienciaController extends Controller
             'sala',
             'imputados',
             'creador',
-        ])->orderByDesc('fecha')->paginate(15);
+        ])
+            ->when($buscar, function ($query) use ($buscar) {
+                $query->where('causa', 'like', "%{$buscar}%")
+                    ->orWhereHas('juez', function ($q) use ($buscar) {
+                        $q->where('nombre', 'like', "%{$buscar}%");
+                    })
+                    ->orWhereHas('delito', function ($q) use ($buscar) {
+                        $q->where('delito', 'like', "%{$buscar}%");
+                    })
+                    ->orWhereHas('imputados', function ($q) use ($buscar) {
+                        $q->where('nombre', 'like', "%{$buscar}%")
+                            ->orWhere('apellidos', 'like', "%{$buscar}%");
+                    });
+            })
+            ->orderByDesc('fecha')
+            ->paginate(15)
+            ->withQueryString();
 
-        return view('audiencias.index', compact('audiencias'));
+        return view('audiencias.index', compact('audiencias', 'buscar'));
     }
 
     public function create()

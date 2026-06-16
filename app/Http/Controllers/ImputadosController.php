@@ -7,14 +7,21 @@ use Illuminate\Http\Request;
 
 class ImputadosController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $buscar = $request->buscar;
+
         $imputados = Imputado::withCount('audiencias')
+            ->when($buscar, function ($query, $buscar) {
+                $query->where('nombre', 'like', "%{$buscar}%")
+                    ->orWhere('apellidos', 'like', "%{$buscar}%");
+            })
             ->orderBy('apellidos')
             ->orderBy('nombre')
-            ->paginate(10);
+            ->paginate(10)
+            ->appends(['buscar' => $buscar]);
 
-        return view('imputados.index', compact('imputados'));
+        return view('imputados.index', compact('imputados', 'buscar'));
     }
 
     public function create()
@@ -27,6 +34,7 @@ class ImputadosController extends Controller
         $validated = $request->validate([
             'nombre' => 'required|string|max:45',
             'apellidos' => 'required|string|max:45',
+            'fecha_registro' => 'required|date',
         ]);
 
         Imputado::create($validated);
@@ -36,9 +44,19 @@ class ImputadosController extends Controller
 
     public function show(Imputado $imputado)
     {
-        $imputado->load('audiencias');
+        $imputado->load([
+            'audiencias' => function ($q) {
+                $q->with(['delito', 'juez', 'tipoAudiencia'])
+                    ->orderByDesc('fecha');
+            }
+        ]);
 
-        return view('imputados.show', compact('imputado'));
+        $ultimaAudiencia = $imputado->audiencias->first();
+
+        return view(
+            'imputados.show',
+            compact('imputado', 'ultimaAudiencia')
+        );
     }
 
     public function edit(Imputado $imputado)
@@ -51,8 +69,8 @@ class ImputadosController extends Controller
         $validated = $request->validate([
             'nombre' => 'required|string|max:45',
             'apellidos' => 'required|string|max:45',
+            'fecha_registro' => 'required|date',
         ]);
-
         $imputado->update($validated);
 
         return redirect()->route('imputados.show', $imputado)->with('success', 'Imputado actualizado exitosamente');

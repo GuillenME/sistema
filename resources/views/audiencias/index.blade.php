@@ -1,7 +1,36 @@
 @extends('layouts.app')
 
 @section('title', 'Audiencias')
+@push('styles')
+    <style>
+        .search-panel {
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0;
+            background: transparent;
+        }
 
+        .search-form {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 300px;
+            padding: 10px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: #2563eb;
+        }
+    </style>
+@endpush
 @section('content')
     @php $userRole = Auth::user()->role->tipo ?? ''; @endphp
 
@@ -20,7 +49,22 @@
                 @endif
             </div>
         </div>
+        <div class=" search-panel">
+            <form method="GET" action="{{ route('audiencias.index') }}" class="search-form">
+                <input type="text" name="buscar" value="{{ request('buscar') }}"
+                    placeholder="Buscar por causa, juez, delito o imputado..." class="search-input">
 
+                <button type="submit" class="btn-primary">
+                    Buscar
+                </button>
+
+                @if (request('buscar'))
+                    <a href="{{ route('audiencias.index') }}" class="btn-secondary">
+                        Limpiar
+                    </a>
+                @endif
+            </form>
+        </div>
         <div class="panel table-wrapper">
             <table class="data-table">
                 <thead>
