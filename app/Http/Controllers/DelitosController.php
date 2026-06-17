@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Delito;
+use App\Models\Imputado;
 use Illuminate\Http\Request;
 
 class DelitosController extends Controller
@@ -80,13 +81,23 @@ class DelitosController extends Controller
     public function storeAjax(Request $request)
     {
         $request->validate([
-            'delito' => 'required|string|max:255|unique:delitos,delito'
+            'nombre' => 'required|string|max:255',
+            'apellidos' => 'required|string|max:255',
+
+            'causa' => 'nullable|string|max:45',
+            'delitos_id' => 'nullable|exists:delitos,id',
         ]);
 
-        $delito = Delito::create([
-            'delito' => $request->delito
+        $imputado = Imputado::create([
+            'nombre' => $request->nombre,
+            'apellidos' => $request->apellidos,
+
+            'fecha_registro' => now(),
+
+            'causa' => $request->causa,
+            'delitos_id' => $request->delitos_id,
         ]);
 
-        return response()->json($delito);
+        return response()->json($imputado);
     }
 }

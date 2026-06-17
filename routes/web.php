@@ -54,6 +54,10 @@ Route::middleware(['auth', 'role:admin,oficinista'])->group(function () {
         '/notificaciones/{notificacion}/atender',
         [NotificacionController::class, 'atender']
     )->name('notificaciones.atender');
+    Route::get(
+        '/resumen/{resumen}/pdf',
+        [ResumenController::class, 'exportPdf']
+    )->name('resumen.pdf');
 });
 
 // Administracion de audiencias -> solo admin

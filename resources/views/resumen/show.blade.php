@@ -80,6 +80,9 @@
             </div>
             <div class="detail-actions">
                 @if (in_array($userRole, ['admin', 'oficinista']))
+                    <a href="{{ route('resumen.pdf', $resumen) }}" class="btn-primary">
+                        Descargar PDF
+                    </a>
                     <a href="{{ route('resumen.edit', $resumen) }}" class="btn-edit">Editar</a>
                     <form action="{{ route('resumen.destroy', $resumen) }}" method="POST"
                         onsubmit="return confirm('Desea eliminar este resumen? Esta accion no se puede deshacer.');">

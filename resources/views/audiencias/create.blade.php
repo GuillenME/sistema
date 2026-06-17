@@ -708,7 +708,11 @@
                             },
                             body: JSON.stringify({
                                 nombre: document.getElementById('nuevoNombre').value,
-                                apellidos: document.getElementById('nuevoApellido').value
+                                apellidos: document.getElementById('nuevoApellido').value,
+
+                                causa: document.getElementById('causa').value,
+
+                                delitos_id: document.getElementById('delitos_id').value
                             })
                         }
                     );

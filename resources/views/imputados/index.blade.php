@@ -85,6 +85,8 @@
                             <th>Apellidos</th>
                             <th>Fecha Registro</th>
                             <th>Audiencias</th>
+                            <th>Causa</th>
+                            <th>Delito</th>
                             <th style="width: 260px;">Acciones</th>
                         </tr>
                     </thead>
@@ -95,10 +97,15 @@
                                 <td><span class="text-strong">{{ $imputado->nombre }}</span></td>
                                 <td><span class="text-muted">{{ $imputado->apellidos }}</span></td>
                                 <td>
-                                    {{ $imputado->fecha_registro ? \Carbon\Carbon::parse($imputado->fecha_registro)->format('d/m/Y') : 'Sin fecha' }}
+                                    {{ $imputado->fecha_registro ? $imputado->fecha_registro->format('d/m/Y') : '-' }}
                                 </td>
 
                                 <td><span class="badge">{{ $imputado->audiencias_count }}</span></td>
+                                <td>{{ $imputado->causa ?? '-' }}</td>
+
+                                <td>
+                                    {{ $imputado->delito->delito ?? '-' }}
+                                </td>
                                 <td>
                                     <div class="actions">
                                         <a href="{{ route('imputados.show', $imputado) }}" class="btn-info btn-sm">Ver</a>

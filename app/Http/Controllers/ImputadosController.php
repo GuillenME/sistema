@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Delito;
 use App\Models\Imputado;
 use Illuminate\Http\Request;
 
@@ -26,7 +27,9 @@ class ImputadosController extends Controller
 
     public function create()
     {
-        return view('imputados.create');
+        $delitos = Delito::orderBy('delito')->get();
+
+        return view('imputados.create', compact('delitos'));
     }
 
     public function store(Request $request)
@@ -35,6 +38,9 @@ class ImputadosController extends Controller
             'nombre' => 'required|string|max:45',
             'apellidos' => 'required|string|max:45',
             'fecha_registro' => 'required|date',
+
+            'causa' => 'nullable|string|max:45',
+            'delitos_id' => 'nullable|exists:delitos,id',
         ]);
 
         Imputado::create($validated);
@@ -61,7 +67,9 @@ class ImputadosController extends Controller
 
     public function edit(Imputado $imputado)
     {
-        return view('imputados.edit', compact('imputado'));
+        $delitos = Delito::orderBy('delito')->get();
+
+        return view('imputados.edit', compact('imputado', 'delitos'));
     }
 
     public function update(Request $request, Imputado $imputado)
@@ -70,6 +78,8 @@ class ImputadosController extends Controller
             'nombre' => 'required|string|max:45',
             'apellidos' => 'required|string|max:45',
             'fecha_registro' => 'required|date',
+            'causa' => 'nullable|string|max:45',
+            'delitos_id' => 'nullable|exists:delitos,id',
         ]);
         $imputado->update($validated);
 
@@ -88,11 +98,19 @@ class ImputadosController extends Controller
         $request->validate([
             'nombre' => 'required|string|max:255',
             'apellidos' => 'required|string|max:255',
+            'fecha_registro' => now()->toDateString(),
+            'causa' => 'nullable|string|max:45',
+            'delitos_id' => 'nullable|exists:delitos,id',
         ]);
 
         $imputado = Imputado::create([
             'nombre' => $request->nombre,
             'apellidos' => $request->apellidos,
+
+            'fecha_registro' => now(),
+
+            'causa' => $request->causa,
+            'delitos_id' => $request->delitos_id,
         ]);
 
         return response()->json($imputado);

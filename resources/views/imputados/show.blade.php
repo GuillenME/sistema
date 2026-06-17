@@ -26,6 +26,18 @@
                 </div>
             </div>
             <div class="detail-field">
+                <div class="detail-label">Causa inicial</div>
+                <div class="detail-value">
+                    {{ $imputado->causa ?? 'No registrada' }}
+                </div>
+            </div>
+            <div class="detail-field">
+                <div class="detail-label">Delito inicial</div>
+                <div class="detail-value">
+                    {{ $imputado->delito->delito ?? 'No registrado' }}
+                </div>
+            </div>
+            <div class="detail-field">
                 <div class="detail-label">Estado</div>
                 <span class="badge">Activo</span>
             </div>
@@ -69,7 +81,7 @@
                                 {{ $ultimaAudiencia->juez->nombre ?? 'No asignado' }}
                             </p>
 
-                    
+
                         </div>
                     @endif
 

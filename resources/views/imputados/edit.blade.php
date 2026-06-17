@@ -39,6 +39,33 @@
                         <div class="form-error">{{ $message }}</div>
                     @enderror
                 </div>
+                <div class="form-group">
+                    <label for="causa">Causa inicial</label>
+
+                    <input type="text" id="causa" name="causa" value="{{ old('causa', $imputado->causa) }}">
+
+                    @error('causa')
+                        <div class="form-error">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="delitos_id">Delito inicial</label>
+
+                    <select id="delitos_id" name="delitos_id">
+                        <option value="">Seleccione</option>
+
+                        @foreach ($delitos as $delito)
+                            <option value="{{ $delito->id }}"
+                                {{ old('delitos_id', $imputado->delitos_id) == $delito->id ? 'selected' : '' }}>
+                                {{ $delito->delito }}
+                            </option>
+                        @endforeach
+                    </select>
+
+                    @error('delitos_id')
+                        <div class="form-error">{{ $message }}</div>
+                    @enderror
+                </div>
                 <div class="form-actions">
                     <button type="submit" class="btn-submit">Guardar cambios</button>
                     <a href="{{ route('imputados.show', $imputado) }}" class="btn-cancel">Cancelar</a>

@@ -6,6 +6,7 @@ use App\Models\Audiencia;
 use App\Models\Resumen;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ResumenController extends Controller
 {
@@ -57,6 +58,20 @@ class ResumenController extends Controller
         ]);
 
         return view('resumen.show', compact('resumen'));
+    }
+    public function exportPdf(Resumen $resumen)
+    {
+        $resumen->load([
+            'audiencia.delito',
+            'audiencia.tipoAudiencia',
+            'audiencia.juez',
+            'audiencia.sala',
+            'audiencia.imputados',
+        ]);
+
+        $pdf = Pdf::loadView('resumen.pdf', compact('resumen'));
+
+        return $pdf->download('Resumen_' . $resumen->id . '.pdf');
     }
 
     public function edit(Resumen $resumen)
