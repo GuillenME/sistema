@@ -727,17 +727,19 @@
                     <a href="{{ route('imputados.index') }}">Imputados</a>
                 @endif
             </nav>
-            <a href="{{ route('notificaciones.index') }}" class="notification-bell" title="Notificaciones">
+            @if ($userRole === 'admin')
+                <a href="{{ route('notificaciones.index') }}" class="notification-bell" title="Notificaciones">
 
-                🔔
+                    🔔
 
-                @if ($notificacionesPendientes->count())
-                    <span class="notification-count">
-                        {{ $notificacionesPendientes->count() }}
-                    </span>
-                @endif
+                    @if ($notificacionesPendientes->count())
+                        <span class="notification-count">
+                            {{ $notificacionesPendientes->count() }}
+                        </span>
+                    @endif
 
-            </a>
+                </a>
+            @endif
             <form action="{{ route('auth.logout') }}" method="POST" style="display: inline;">
                 @csrf
                 <button type="submit" class="logout-btn">Cerrar sesión</button>
@@ -754,7 +756,7 @@
         @if (session('success'))
             <div class="alert">{{ session('success') }}</div>
         @endif
-        @if (isset($notificacionesPendientes) && $notificacionesPendientes->count())
+        @if ($userRole === 'admin' && isset($notificacionesPendientes) && $notificacionesPendientes->count())
             <div class="alert">
 
                 ⚠ Hay

@@ -288,12 +288,7 @@
 
                     </form>
 
-                    <div class="register-link">
-                        ¿No tienes cuenta?
-                        <a href="{{ route('auth.showRegister') }}">
-                            Regístrate aquí
-                        </a>
-                    </div>
+                   
 
                 </div>
 

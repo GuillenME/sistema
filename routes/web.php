@@ -17,8 +17,8 @@ Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('auth.login');
     Route::post('/login', [AuthController::class, 'authenticate'])->name('auth.authenticate');
 
-    Route::get('/register', [AuthController::class, 'showRegister'])->name('auth.showRegister');
-    Route::post('/register', [AuthController::class, 'store'])->name('auth.store');
+    Route::get('/register-usuario', [AuthController::class, 'showRegister'])->name('auth.showRegister');
+    Route::post('/register-usuario', [AuthController::class, 'store'])->name('auth.store');
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('auth.logout');
