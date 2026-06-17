@@ -669,6 +669,29 @@
             }
         }
 
+        .notification-bell {
+            position: relative;
+            color: white;
+            font-size: 24px;
+            margin-right: 20px;
+        }
+
+        .notification-count {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: #dc3545;
+            color: white;
+            border-radius: 50%;
+            min-width: 18px;
+            height: 18px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
         @stack('styles')
     </style>
 </head>
@@ -704,6 +727,17 @@
                     <a href="{{ route('imputados.index') }}">Imputados</a>
                 @endif
             </nav>
+            <a href="{{ route('notificaciones.index') }}" class="notification-bell" title="Notificaciones">
+
+                🔔
+
+                @if ($notificacionesPendientes->count())
+                    <span class="notification-count">
+                        {{ $notificacionesPendientes->count() }}
+                    </span>
+                @endif
+
+            </a>
             <form action="{{ route('auth.logout') }}" method="POST" style="display: inline;">
                 @csrf
                 <button type="submit" class="logout-btn">Cerrar sesión</button>
@@ -712,12 +746,22 @@
     </header>
 
     <main class="main">
+
         <div class="watermark">
             <img src="{{ asset('img/fondo.png') }}" alt="Marca de agua">
         </div>
 
         @if (session('success'))
             <div class="alert">{{ session('success') }}</div>
+        @endif
+        @if (isset($notificacionesPendientes) && $notificacionesPendientes->count())
+            <div class="alert">
+
+                ⚠ Hay
+                {{ $notificacionesPendientes->count() }}
+                plazo(s) próximos a vencer.
+
+            </div>
         @endif
 
         @yield('content')

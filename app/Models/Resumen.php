@@ -15,6 +15,7 @@ class Resumen extends Model
     protected $fillable = [
         'hora_inicio',
         'hora_final',
+        'fecha_vencimiento',
         'defensa',
         'fiscalia',
         'auxiliar',
@@ -28,6 +29,7 @@ class Resumen extends Model
     protected $casts = [
         'hora_inicio' => 'datetime:H:i',
         'hora_final' => 'datetime:H:i',
+        'fecha_vencimiento' => 'date',
     ];
 
     /**

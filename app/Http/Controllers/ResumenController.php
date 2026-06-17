@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Audiencia;
 use App\Models\Resumen;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class ResumenController extends Controller
 {
@@ -31,7 +32,13 @@ class ResumenController extends Controller
     public function store(Request $request)
     {
         $data = $this->validateResumen($request);
+        if (!empty($data['plazo'])) {
 
+            $audiencia = Audiencia::findOrFail($data['audiencias_id']);
+
+            $data['fecha_vencimiento'] = Carbon::parse($audiencia->fecha)
+                ->addDays($data['plazo']);
+        }
         Resumen::create($data);
 
         return redirect()
@@ -63,13 +70,21 @@ class ResumenController extends Controller
     {
         $data = $this->validateResumen($request);
 
+        if (!empty($data['plazo'])) {
+
+            $audiencia = Audiencia::findOrFail($data['audiencias_id']);
+
+            $data['fecha_vencimiento'] = Carbon::parse($audiencia->fecha)
+                ->addDays($data['plazo']);
+        }
+
         $resumen->update($data);
 
         return redirect()
             ->route('resumen.show', $resumen)
             ->with('success', 'Resumen actualizado correctamente.');
     }
-
+    
     public function destroy(Resumen $resumen)
     {
         $resumen->delete();
@@ -89,7 +104,7 @@ class ResumenController extends Controller
             'fiscalia' => 'nullable|string|max:45',
             'auxiliar' => 'nullable|string|max:45',
             'victima' => 'nullable|string|max:45',
-            'plazo' => 'nullable|string|max:45',
+            'plazo' => 'nullable|integer|min:1|max:3650',
             'hechos_ocurridos' => 'nullable|string',
             'medida' => 'nullable|string|max:45',
         ]);

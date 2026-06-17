@@ -10,6 +10,7 @@ use App\Http\Controllers\ResumenController;
 use App\Http\Controllers\TipoAudienciaController;
 use App\Http\Controllers\TraductorController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\NotificacionController;
 
 Route::middleware('guest')->group(function () {
     Route::get('/', [AuthController::class, 'showLogin'])->name('auth.showLogin');
@@ -45,6 +46,14 @@ Route::middleware(['auth', 'role:admin,oficinista'])->group(function () {
     Route::get('/resumen/{resumen}/edit', [ResumenController::class, 'edit'])->name('resumen.edit');
     Route::put('/resumen/{resumen}', [ResumenController::class, 'update'])->name('resumen.update');
     Route::delete('/resumen/{resumen}', [ResumenController::class, 'destroy'])->name('resumen.destroy');
+    Route::get(
+        '/notificaciones',
+        [NotificacionController::class, 'index']
+    )->name('notificaciones.index');
+    Route::post(
+        '/notificaciones/{notificacion}/atender',
+        [NotificacionController::class, 'atender']
+    )->name('notificaciones.atender');
 });
 
 // Administracion de audiencias -> solo admin

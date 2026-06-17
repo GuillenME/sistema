@@ -95,8 +95,8 @@
 
                 <div class="form-group">
                     <label for="plazo">Plazo de investigación</label>
-                    <input type="text" id="plazo" name="plazo" value="{{ old('plazo', $resumen->plazo) }}"
-                        maxlength="45">
+                    <input type="number" id="plazo" name="plazo" min="1"
+                        value="{{ old('plazo', $resumen->plazo) }}">
                     @error('plazo')
                         <div class="form-error">{{ $message }}</div>
                     @enderror

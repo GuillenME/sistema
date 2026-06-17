@@ -94,7 +94,7 @@
 
                 <div class="form-group">
                     <label for="plazo">Plazo de investigación</label>
-                    <input type="text" id="plazo" name="plazo" value="{{ old('plazo') }}" maxlength="45">
+                    <input type="number" id="plazo" name="plazo" min="1" value="{{ old('plazo') }}">
                     @error('plazo')
                         <div class="form-error">{{ $message }}</div>
                     @enderror
@@ -103,6 +103,7 @@
                 <div class="form-group full">
                     <label for="medida">Medida cautelar</label>
                     <input type="text" id="medida" name="medida" value="{{ old('medida') }}" maxlength="45">
+                    <small>Ingrese el plazo en días.</small>
                     @error('medida')
                         <div class="form-error">{{ $message }}</div>
                     @enderror
