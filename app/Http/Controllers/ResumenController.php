@@ -84,7 +84,7 @@ class ResumenController extends Controller
             ->route('resumen.show', $resumen)
             ->with('success', 'Resumen actualizado correctamente.');
     }
-    
+
     public function destroy(Resumen $resumen)
     {
         $resumen->delete();
@@ -98,14 +98,15 @@ class ResumenController extends Controller
     {
         return $request->validate([
             'audiencias_id' => 'required|exists:audiencias,id',
-            'hora_inicio' => 'nullable|date_format:H:i',
-            'hora_final' => 'nullable|date_format:H:i',
-            'defensa' => 'nullable|string|max:45',
-            'fiscalia' => 'nullable|string|max:45',
-            'auxiliar' => 'nullable|string|max:45',
-            'victima' => 'nullable|string|max:45',
+            'hora_inicio' => 'required|nullable|date_format:H:i',
+            'hora_final' => 'required|nullable|date_format:H:i',
+            'defensa' => 'required|nullable|string|max:45',
+            'fiscalia' => 'required|nullable|string|max:45',
+            'auxiliar' => 'required|nullable|string|max:45',
+            'victima' => 'required|nullable|string|max:45',
             'plazo' => 'nullable|integer|min:1|max:3650',
             'hechos_ocurridos' => 'nullable|string',
+            'observaciones' => 'nullable|string',
             'medida' => 'nullable|string|max:45',
         ]);
     }

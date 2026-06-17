@@ -111,10 +111,18 @@
                     @enderror
                 </div>
                 <div class="form-group full">
-                    <label for="hechos_ocurridos">Resumen de los hechos ocurridos</label>
+                    <label for="hechos_ocurridos">Resumen de los hechos</label>
                     <textarea id="hechos_ocurridos" name="hechos_ocurridos" rows="6">{{ old('hechos_ocurridos', $resumen->hechos_ocurridos) }}</textarea>
 
                     @error('hechos_ocurridos')
+                        <div class="form-error">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group full">
+                    <label for="observaciones">Observaciones / Incidencias</label>
+                    <textarea id="observaciones" name="observaciones" rows="5">{{ old('observaciones', $resumen->observaciones) }}</textarea>
+
+                    @error('observaciones')
                         <div class="form-error">{{ $message }}</div>
                     @enderror
                 </div>

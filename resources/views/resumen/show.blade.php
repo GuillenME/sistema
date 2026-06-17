@@ -69,10 +69,15 @@
             </div>
 
             <div class="detail-field">
-                <div class="detail-label">Resumen de los hechos ocurridos</div>
+                <div class="detail-label">Resumen de los hechos</div>
                 <div class="detail-value">{{ $resumen->hechos_ocurridos ?? '-' }}</div>
             </div>
-
+            <div class="detail-field">
+                <div class="detail-label">Observaciones / Incidencias</div>
+                <div class="detail-value">
+                    {{ $resumen->observaciones ?? '-' }}
+                </div>
+            </div>
             <div class="detail-actions">
                 @if (in_array($userRole, ['admin', 'oficinista']))
                     <a href="{{ route('resumen.edit', $resumen) }}" class="btn-edit">Editar</a>

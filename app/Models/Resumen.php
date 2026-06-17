@@ -23,6 +23,7 @@ class Resumen extends Model
         'plazo',
         'medida',
         'hechos_ocurridos',
+        'observaciones',
         'audiencias_id',
     ];
 
