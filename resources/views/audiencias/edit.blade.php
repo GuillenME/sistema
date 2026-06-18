@@ -97,8 +97,8 @@
 
                 <div class="form-group full">
                     <label for="causa">Causa *</label>
-                    <input type="text" id="causa" name="causa" value="{{ old('causa', $audiencia->causa) }}"
-                        required>
+                    <input type="text" id="causa" name="causa" pattern="\d+\/\d{4}"
+                        value="{{ old('causa', $audiencia->causa) }}" required>
                     @error('causa')
                         <div class="form-error">{{ $message }}</div>
                     @enderror
@@ -342,6 +342,23 @@
             });
 
             updateHelp();
+        });
+    </script>
+    <script>
+        document.getElementById('causa').addEventListener('input', function() {
+
+            let valor = this.value;
+
+            // Solo números y diagonal
+            valor = valor.replace(/[^0-9/]/g, '');
+
+            // Solo una diagonal
+            let partes = valor.split('/');
+            if (partes.length > 2) {
+                valor = partes[0] + '/' + partes.slice(1).join('');
+            }
+
+            this.value = valor;
         });
     </script>
 @endsection

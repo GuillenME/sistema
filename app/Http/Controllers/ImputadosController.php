@@ -35,12 +35,31 @@ class ImputadosController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nombre' => 'required|string|max:45',
-            'apellidos' => 'required|string|max:45',
+            'nombre' => [
+                'required',
+                'max:45',
+                'regex:/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/'
+            ],
+
+            'apellidos' => [
+                'required',
+                'max:45',
+                'regex:/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/'
+            ],
+
             'fecha_registro' => 'required|date',
 
-            'causa' => 'nullable|string|max:45',
+            'causa' => [
+                'nullable',
+                'regex:/^\d+\/\d{4}$/'
+            ],
+
             'delitos_id' => 'nullable|exists:delitos,id',
+
+        ], [
+            'nombre.regex' => 'El nombre solo puede contener letras.',
+            'apellidos.regex' => 'Los apellidos solo pueden contener letras.',
+            'causa.regex' => 'La causa debe tener el formato 23/2026.'
         ]);
 
         Imputado::create($validated);
@@ -75,11 +94,31 @@ class ImputadosController extends Controller
     public function update(Request $request, Imputado $imputado)
     {
         $validated = $request->validate([
-            'nombre' => 'required|string|max:45',
-            'apellidos' => 'required|string|max:45',
+            'nombre' => [
+                'required',
+                'max:45',
+                'regex:/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/'
+            ],
+
+            'apellidos' => [
+                'required',
+                'max:45',
+                'regex:/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/'
+            ],
+
             'fecha_registro' => 'required|date',
-            'causa' => 'nullable|string|max:45',
+
+            'causa' => [
+                'nullable',
+                'regex:/^\d+\/\d{4}$/'
+            ],
+
             'delitos_id' => 'nullable|exists:delitos,id',
+
+        ], [
+            'nombre.regex' => 'El nombre solo puede contener letras.',
+            'apellidos.regex' => 'Los apellidos solo pueden contener letras.',
+            'causa.regex' => 'La causa debe tener el formato 23/2026.'
         ]);
         $imputado->update($validated);
 
@@ -96,11 +135,29 @@ class ImputadosController extends Controller
     public function storeAjax(Request $request)
     {
         $request->validate([
-            'nombre' => 'required|string|max:255',
-            'apellidos' => 'required|string|max:255',
-            'fecha_registro' => now()->toDateString(),
-            'causa' => 'nullable|string|max:45',
+            'nombre' => [
+                'required',
+                'max:255',
+                'regex:/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/'
+            ],
+
+            'apellidos' => [
+                'required',
+                'max:255',
+                'regex:/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/'
+            ],
+
+            'causa' => [
+                'nullable',
+                'regex:/^\d+\/\d{4}$/'
+            ],
+
             'delitos_id' => 'nullable|exists:delitos,id',
+
+        ], [
+            'nombre.regex' => 'El nombre solo puede contener letras.',
+            'apellidos.regex' => 'Los apellidos solo pueden contener letras.',
+            'causa.regex' => 'La causa debe tener el formato 23/2026.'
         ]);
 
         $imputado = Imputado::create([

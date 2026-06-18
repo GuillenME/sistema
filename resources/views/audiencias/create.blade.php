@@ -175,6 +175,19 @@
     .imputados-mode label{
     justify-content:center;
     }
+    .select2-container--default .select2-selection--single {
+    height: 42px;
+    border: 1px solid var(--gold);
+    border-radius: 8px;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 42px;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 42px;
+    }
 @endpush
 
 @section('content')
@@ -210,7 +223,7 @@
                 <div class="form-group full">
                     <label for="causa">Causa *</label>
 
-                    <input type="text" id="causa" name="causa" placeholder="Ej: Audiencia preliminar"
+                    <input type="text" id="causa" name="causa" pattern="\d+\/\d{4}" placeholder="Ej: 23/2026"
                         value="{{ old('causa') }}" required>
 
                     @error('causa')
@@ -812,5 +825,39 @@
                 }
             }
         }
+    </script>
+    <script>
+        $(document).ready(function() {
+
+            $('#tipo_audiencia_id').select2({
+                placeholder: 'Buscar tipo de audiencia',
+                allowClear: true,
+                width: '100%'
+            });
+
+            $('#delitos_id').select2({
+                placeholder: 'Buscar delito',
+                allowClear: true,
+                width: '100%'
+            });
+
+        });
+    </script>
+    <script>
+        document.getElementById('causa').addEventListener('input', function() {
+
+            let valor = this.value;
+
+            // Solo números y diagonal
+            valor = valor.replace(/[^0-9/]/g, '');
+
+            // Solo una diagonal
+            let partes = valor.split('/');
+            if (partes.length > 2) {
+                valor = partes[0] + '/' + partes.slice(1).join('');
+            }
+
+            this.value = valor;
+        });
     </script>
 @endsection

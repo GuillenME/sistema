@@ -1,7 +1,21 @@
 @extends('layouts.app')
 
 @section('title', 'Crear Resumen')
+@push('styles')
+    .select2-container--default .select2-selection--single {
+    height: 42px;
+    border: 1px solid var(--gold);
+    border-radius: 8px;
+    }
 
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 42px;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 42px;
+    }
+@endpush
 @section('content')
     <div class="form-container">
         <div class="form-card">
@@ -133,4 +147,14 @@
             </form>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+
+            $('#audiencias_id').select2({
+                placeholder: 'Buscar audiencia',
+                allowClear: true,
+                width: '100%'
+            });
+        });
+    </script>
 @endsection

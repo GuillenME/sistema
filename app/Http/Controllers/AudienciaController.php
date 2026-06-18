@@ -73,7 +73,11 @@ class AudienciaController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'causa' => 'required|string|max:255',
+            'causa' => [
+                'required',
+                'regex:/^\d+\/\d{4}$/'
+            ],
+
             'fecha' => 'required|date',
             'hora' => 'required',
             'modalidad' => 'required|in:Presencial,Virtual,Híbrida',
@@ -85,6 +89,9 @@ class AudienciaController extends Controller
             'salas_id' => 'required|exists:salas,id',
             'imputados' => 'nullable|array',
             'imputados.*' => 'exists:imputados,id',
+
+        ], [
+            'causa.regex' => 'La causa debe tener el formato NÚMERO/AÑO. Ejemplo: 23/2026'
         ]);
 
         $imputados = $data['imputados'] ?? [];
@@ -143,7 +150,10 @@ class AudienciaController extends Controller
     public function update(Request $request, Audiencia $audiencia)
     {
         $data = $request->validate([
-            'causa' => 'required|string|max:255',
+            'causa' => [
+                'required',
+                'regex:/^\d+\/\d{4}$/'
+            ],
             'fecha' => 'required|date',
             'hora' => 'required',
             'modalidad' => 'required|in:Presencial,Virtual,Híbrida',

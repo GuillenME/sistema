@@ -55,8 +55,6 @@
                             Presencial</option>
                         <option value="Virtual" {{ ($filters['modalidad'] ?? '') === 'Virtual' ? 'selected' : '' }}>Virtual
                         </option>
-                        <option value="Híbrida" {{ ($filters['modalidad'] ?? '') === 'Híbrida' ? 'selected' : '' }}>Hibrida
-                        </option>
                     </select>
                     @error('modalidad')
                         <div class="form-error">{{ $message }}</div>
