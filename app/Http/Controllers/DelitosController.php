@@ -81,23 +81,13 @@ class DelitosController extends Controller
     public function storeAjax(Request $request)
     {
         $request->validate([
-            'nombre' => 'required|string|max:255',
-            'apellidos' => 'required|string|max:255',
-
-            'causa' => 'nullable|string|max:45',
-            'delitos_id' => 'nullable|exists:delitos,id',
+            'delito' => 'required|string|unique:delitos,delito|max:255',
         ]);
 
-        $imputado = Imputado::create([
-            'nombre' => $request->nombre,
-            'apellidos' => $request->apellidos,
-
-            'fecha_registro' => now(),
-
-            'causa' => $request->causa,
-            'delitos_id' => $request->delitos_id,
+        $delito = Delito::create([
+            'delito' => $request->delito,
         ]);
 
-        return response()->json($imputado);
+        return response()->json($delito);
     }
 }

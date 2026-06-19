@@ -649,12 +649,13 @@
                         })
                     });
 
-                    const data = await response.json();
-
                     if (!response.ok) {
+                        console.log(await response.text());
                         alert('Error al guardar delito');
                         return;
                     }
+
+                    const data = await response.json();
 
                     const option = new Option(
                         data.delito,
