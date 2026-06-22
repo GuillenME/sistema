@@ -75,12 +75,11 @@ class AudienciaController extends Controller
         $data = $request->validate([
             'causa' => [
                 'required',
-                'regex:/^\d+\/\d{4}$/'
             ],
 
             'fecha' => 'required|date',
             'hora' => 'required',
-            'modalidad' => 'required|in:Presencial,Virtual,Híbrida',
+            'modalidad' => 'required|in:Presencial,Virtual',
             'delitos_id' => 'required|exists:delitos,id',
             'tipo_audiencia_id' => 'required|exists:tipo_audiencia,id',
             'juez_id' => 'required|exists:juez,id',
@@ -90,8 +89,6 @@ class AudienciaController extends Controller
             'imputados' => 'nullable|array',
             'imputados.*' => 'exists:imputados,id',
 
-        ], [
-            'causa.regex' => 'La causa debe tener el formato NÚMERO/AÑO. Ejemplo: 23/2026'
         ]);
 
         $imputados = $data['imputados'] ?? [];
@@ -151,9 +148,7 @@ class AudienciaController extends Controller
     {
         $data = $request->validate([
             'causa' => [
-                'required',
-                'regex:/^\d+\/\d{4}$/'
-            ],
+                'required',            ],
             'fecha' => 'required|date',
             'hora' => 'required',
             'modalidad' => 'required|in:Presencial,Virtual,Híbrida',

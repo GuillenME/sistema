@@ -51,7 +51,7 @@ class ImputadosController extends Controller
 
             'causa' => [
                 'nullable',
-                'regex:/^\d+\/\d{4}$/'
+                
             ],
 
             'delitos_id' => 'nullable|exists:delitos,id',
@@ -59,7 +59,7 @@ class ImputadosController extends Controller
         ], [
             'nombre.regex' => 'El nombre solo puede contener letras.',
             'apellidos.regex' => 'Los apellidos solo pueden contener letras.',
-            'causa.regex' => 'La causa debe tener el formato 23/2026.'
+            
         ]);
 
         Imputado::create($validated);
@@ -110,7 +110,7 @@ class ImputadosController extends Controller
 
             'causa' => [
                 'nullable',
-                'regex:/^\d+\/\d{4}$/'
+                
             ],
 
             'delitos_id' => 'nullable|exists:delitos,id',
@@ -118,7 +118,7 @@ class ImputadosController extends Controller
         ], [
             'nombre.regex' => 'El nombre solo puede contener letras.',
             'apellidos.regex' => 'Los apellidos solo pueden contener letras.',
-            'causa.regex' => 'La causa debe tener el formato 23/2026.'
+           
         ]);
         $imputado->update($validated);
 
@@ -149,7 +149,7 @@ class ImputadosController extends Controller
 
             'causa' => [
                 'nullable',
-                'regex:/^\d+\/\d{4}$/'
+               
             ],
 
             'delitos_id' => 'nullable|exists:delitos,id',
@@ -157,7 +157,7 @@ class ImputadosController extends Controller
         ], [
             'nombre.regex' => 'El nombre solo puede contener letras.',
             'apellidos.regex' => 'Los apellidos solo pueden contener letras.',
-            'causa.regex' => 'La causa debe tener el formato 23/2026.'
+            
         ]);
 
         $imputado = Imputado::create([

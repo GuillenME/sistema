@@ -223,7 +223,7 @@
                 <div class="form-group full">
                     <label for="causa">Causa *</label>
 
-                    <input type="text" id="causa" name="causa" pattern="\d+\/\d{4}" placeholder="Ej: 23/2026"
+                    <input type="text" id="causa" name="causa" placeholder="Ej: 23/2026"
                         value="{{ old('causa') }}" required>
 
                     @error('causa')
@@ -705,35 +705,31 @@
             });
     </script>
     <script>
-        document
-            .getElementById('guardarImputado')
+        document.getElementById('guardarImputado')
             .addEventListener('click', async function() {
 
                 try {
 
-                    const response = await fetch(
-                        '{{ route('imputados.ajax.store') }}', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector(
-                                    'meta[name="csrf-token"]'
-                                ).content
-                            },
-                            body: JSON.stringify({
-                                nombre: document.getElementById('nuevoNombre').value,
-                                apellidos: document.getElementById('nuevoApellido').value,
+                    const response = await fetch('{{ route('imputados.ajax.store') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({
+                            nombre: document.getElementById('nuevoNombre').value,
+                            apellidos: document.getElementById('nuevoApellido').value,
 
-                                causa: document.getElementById('causa').value,
+                            causa: document.getElementById('causa').value || null,
+                            delitos_id: document.getElementById('delitos_id').value || null
+                        })
+                    });
 
-                                delitos_id: document.getElementById('delitos_id').value
-                            })
-                        }
-                    );
-
-                    const data = await response.json();
+                    const data = await response.json().catch(() => null);
 
                     if (!response.ok) {
+                        console.log(data);
                         alert('Error al guardar imputado');
                         return;
                     }
@@ -741,15 +737,12 @@
                     agregarImputadoLista(data);
 
                     document.getElementById('modalImputado').style.display = 'none';
-
                     document.getElementById('nuevoNombre').value = '';
                     document.getElementById('nuevoApellido').value = '';
 
                 } catch (e) {
-
                     console.error(e);
                     alert('Error de conexión');
-
                 }
 
             });
@@ -844,21 +837,5 @@
 
         });
     </script>
-    <script>
-        document.getElementById('causa').addEventListener('input', function() {
 
-            let valor = this.value;
-
-            // Solo números y diagonal
-            valor = valor.replace(/[^0-9/]/g, '');
-
-            // Solo una diagonal
-            let partes = valor.split('/');
-            if (partes.length > 2) {
-                valor = partes[0] + '/' + partes.slice(1).join('');
-            }
-
-            this.value = valor;
-        });
-    </script>
 @endsection

@@ -1,119 +1,205 @@
 <!DOCTYPE html>
-<html>
+
+<html lang="es">
 
 <head>
-    <meta charset="utf-8">
-    <title>Resumen {{ $resumen->id }}</title>
+    <meta charset="UTF-8">
+    <title>Tarjeta de Audiencia</title>
+
 
     <style>
-        body {
-            font-family: DejaVu Sans, sans-serif;
-            font-size: 12px;
+        @page {
+            margin: 40px;
         }
 
-        h1 {
-            text-align: center;
+        body {
+            font-family: DejaVu Sans, sans-serif;
+            font-size: 11px;
+            line-height: 1.5;
+            color: #000;
+        }
+
+        .header {
             margin-bottom: 20px;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        td {
-            border: 1px solid #ccc;
-            padding: 8px;
-            vertical-align: top;
+        .juzgado {
+            font-size: 18px;
+            color: #B37A4A;
+            text-align: right;
+            line-height: 1.4;
         }
 
         .titulo {
-            width: 30%;
+            font-size: 13px;
             font-weight: bold;
-            background: #f3f3f3;
+            margin-top: 10px;
+        }
+
+        .causa {
+            margin-top: 8px;
+            font-weight: bold;
+        }
+
+        .seccion {
+            margin-top: 12px;
+            text-align: justify;
+        }
+
+        .campo {
+            font-weight: bold;
+        }
+
+        .contenido {
+            margin-top: 8px;
+            text-align: justify;
+        }
+
+        .firma {
+            margin-top: 60px;
+            text-align: center;
+        }
+
+        .linea {
+            border-top: 1px solid #000;
+            width: 250px;
+            margin: 0 auto;
+            margin-bottom: 5px;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: right;
+            font-size: 10px;
         }
     </style>
+
 </head>
 
 <body>
 
-    <h1>Resumen de Audiencia</h1>
 
-    <table>
-        <tr>
-            <td class="titulo">Causa</td>
-            <td>{{ $resumen->audiencia->causa }}</td>
-        </tr>
+    <div class="header">
 
-        <tr>
-            <td class="titulo">Fecha</td>
-            <td>{{ $resumen->audiencia->fecha->format('d/m/Y') }}</td>
-        </tr>
+        <table width="100%">
+            <tr>
 
-        <tr>
-            <td class="titulo">Tipo de audiencia</td>
-            <td>{{ $resumen->audiencia->tipoAudiencia->tipo ?? '-' }}</td>
-        </tr>
+                <td width="50%">
+                    <img src="{{ public_path('img/logop.jpg') }}" style="height:100px;">
+                </td>
 
-        <tr>
-            <td class="titulo">Juez</td>
-            <td>{{ $resumen->audiencia->juez->nombre ?? '-' }}</td>
-        </tr>
+                <td width="50%" align="right">
+                    <div class="juzgado">
+                        JUZGADO DE CONTROL DEL<br>
+                        DISTRITO JUDICIAL DE OCOSINGO.
+                    </div>
+                </td>
 
-        <tr>
-            <td class="titulo">Imputados</td>
-            <td>
-                @foreach ($resumen->audiencia->imputados as $imputado)
-                    {{ $imputado->nombre }} {{ $imputado->apellidos }}<br>
-                @endforeach
-            </td>
-        </tr>
+            </tr>
+        </table>
 
-        <tr>
-            <td class="titulo">Hora inicio</td>
-            <td>{{ optional($resumen->hora_inicio)->format('H:i') ?? '-' }}</td>
-        </tr>
+        <img src="{{ public_path('img/lineas.jpg') }}" style="width:100%; margin-top:10px;">
 
-        <tr>
-            <td class="titulo">Hora final</td>
-            <td>{{ optional($resumen->hora_final)->format('H:i') ?? '-' }}</td>
-        </tr>S
+    </div>
 
-        <tr>
-            <td class="titulo">Defensa</td>
-            <td>{{ $resumen->defensa }}</td>
-        </tr>
+    <div class="seccion">
 
-        <tr>
-            <td class="titulo">Fiscalía</td>
-            <td>{{ $resumen->fiscalia }}</td>
-        </tr>
+        <p>
 
-        <tr>
-            <td class="titulo">Auxiliar</td>
-            <td>{{ $resumen->auxiliar }}</td>
-        </tr>
+            SIENDO LAS
+            <strong>{{ optional($resumen->hora_inicio)->format('H:i') }}</strong>
+            DEL DÍA
+            <strong>{{ strtoupper($resumen->audiencia->fecha->translatedFormat('d \d\e F \d\e Y')) }}</strong>,
+            DAMOS INICIO A LA AUDIENCIA
+            <strong>{{ strtoupper($resumen->audiencia->tipoAudiencia->tipo) }}</strong>,
+            DENTRO DE LA CAUSA PENAL
+            <strong>{{ $resumen->audiencia->causa }}</strong>,
+            EN CONTRA DE
+            <strong>{{ strtoupper($imputados) }}</strong>,
+            POR SU PROBABLE INTERVENCIÓN DEL HECHO QUE LA LEY SEÑALA COMO DELITO DE
+            <strong>{{ strtoupper($resumen->audiencia->delito->delito ?? '') }}</strong>,
+            COMETIDO EN AGRAVIO DE
+            <strong>{{ strtoupper($resumen->victima) }}</strong>,
+            QUE SERÁ DIRIGIDA POR EL JUEZ DE CONTROL
+            <strong>{{ strtoupper(trim(($resumen->audiencia->juez->nombre ?? '') . ' ' . ($resumen->audiencia->juez->apellidos ?? ''))) }}</strong>.
 
-        <tr>
-            <td class="titulo">Víctima</td>
-            <td>{{ $resumen->victima }}</td>
-        </tr>
+        </p>
+    </div>
 
-        <tr>
-            <td class="titulo">Hechos ocurridos</td>
-            <td>{{ $resumen->hechos_ocurridos }}</td>
-        </tr>
+    <div class="contenido">
 
-        <tr>
-            <td class="titulo">Observaciones</td>
-            <td>{{ $resumen->observaciones }}</td>
-        </tr>
+        
+        <p>
 
-        <tr>
-            <td class="titulo">Medida</td>
-            <td>{{ $resumen->medida }}</td>
-        </tr>
-    </table>
+            <strong>IMPUTADO:</strong>
+
+            {{ strtoupper($imputados) }},
+
+            por su probable intervención del hecho que la Ley señala como delito de
+
+            {{ strtoupper($resumen->audiencia->delito->delito ?? '') }}
+            ,
+
+            cometido en agravio de
+
+            <strong>{{ strtoupper($resumen->victima) }}</strong>,
+
+        </p>
+
+    </div>
+
+    <div class="contenido">
+        <span class="campo">DEFENSA:</span>
+        {{ $resumen->defensa }}
+    </div>
+
+    <div class="contenido">
+        <span class="campo">FISCALÍA:</span>
+        {{ $resumen->fiscalia }}
+    </div>
+
+    <div class="contenido">
+        <span class="campo">AUXILIAR:</span>
+        {{ $resumen->auxiliar }}
+    </div>
+
+    <div class="contenido">
+        <span class="campo">VÍCTIMA:</span>
+        {{ $resumen->victima }}
+    </div>
+
+    <div class="contenido">
+        <span class="campo">HECHOS OCURRIDOS:</span><br><br>
+        {{ $resumen->hechos_ocurridos }}
+    </div>
+
+    <div class="contenido">
+        <span class="campo">OBSERVACIONES:</span><br><br>
+        {{ $resumen->observaciones }}
+    </div>
+
+    <div class="contenido">
+        <span class="campo">MEDIDA:</span><br><br>
+        {{ $resumen->medida }}
+    </div>
+
+    <div class="contenido">
+        <span class="campo">HORA DE INICIO:</span>
+        {{ optional($resumen->hora_inicio)->format('H:i') }}
+        &nbsp;&nbsp;&nbsp;&nbsp;
+
+        <span class="campo">HORA DE CONCLUSIÓN:</span>
+        {{ optional($resumen->hora_final)->format('H:i') }}
+    </div>
+
+    
+
+    <div class="footer">
+        Documento generado el {{ now()->format('d/m/Y') }}
+    </div>
+
 
 </body>
 

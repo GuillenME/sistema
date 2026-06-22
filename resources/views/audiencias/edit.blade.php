@@ -344,21 +344,5 @@
             updateHelp();
         });
     </script>
-    <script>
-        document.getElementById('causa').addEventListener('input', function() {
 
-            let valor = this.value;
-
-            // Solo números y diagonal
-            valor = valor.replace(/[^0-9/]/g, '');
-
-            // Solo una diagonal
-            let partes = valor.split('/');
-            if (partes.length > 2) {
-                valor = partes[0] + '/' + partes.slice(1).join('');
-            }
-
-            this.value = valor;
-        });
-    </script>
 @endsection
