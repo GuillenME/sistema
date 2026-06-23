@@ -112,19 +112,26 @@
                                 <span class="badge">{{ $audiencia->estado ?? 'Programada' }}</span>
                             </td>
                             @if ($userRole === 'admin')
+                                @php
+                                    $puedeDiferir = now()->lte(\Carbon\Carbon::parse($audiencia->fecha)->addDays(3));
+                                @endphp
+
                                 <td>
-                                    <div class="actions">
+                                    <div class="table-actions">
+
                                         <a href="{{ route('audiencias.edit', $audiencia) }}"
                                             class="btn-secondary btn-sm">Modificar</a>
 
-                                        @if (($audiencia->estado ?? 'Programada') !== 'Diferida')
+                                        @if (($audiencia->estado ?? 'Programada') !== 'Diferida' && $puedeDiferir)
                                             <form action="{{ route('audiencias.diferir', $audiencia) }}" method="POST"
-                                                onsubmit="return confirm('Desea diferir esta audiencia?');">
+                                                onsubmit="return confirm('¿Desea diferir esta audiencia?')">
                                                 @csrf
                                                 @method('PATCH')
+
                                                 <button type="submit" class="btn-danger btn-sm">Diferir</button>
                                             </form>
                                         @endif
+
                                     </div>
                                 </td>
                             @endif

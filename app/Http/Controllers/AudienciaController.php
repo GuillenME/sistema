@@ -13,6 +13,7 @@ use App\Models\Traductor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Carbon\Carbon;
 
 class AudienciaController extends Controller
 {
@@ -185,6 +186,14 @@ class AudienciaController extends Controller
 
     public function diferir(Audiencia $audiencia)
     {
+        $fechaLimite = Carbon::parse($audiencia->fecha)->addDays(3);
+
+        if (now()->gt($fechaLimite)) {
+            return redirect()
+                ->route('audiencias.index')
+                ->with('error', 'Ya no es posible diferir esta audiencia.');
+        }
+
         $audiencia->update([
             'estado' => 'Diferida',
         ]);
