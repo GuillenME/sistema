@@ -49,7 +49,7 @@
         }
 
         .topbar-inner {
-            max-width: 1400px;
+            max-width: 1800px;
             margin: 0 auto;
             padding: 16px 24px;
             display: flex;
@@ -166,8 +166,8 @@
         }
 
         .main {
-            width: 100%;
-            max-width: 1400px;
+            width: 95%;
+            max-width: 1550px;
             flex: 1;
             margin: 30px auto 50px;
             padding: 0 24px;
@@ -279,7 +279,6 @@
         .data-table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 720px;
         }
 
         .data-table th {
@@ -694,6 +693,56 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
+        }
+
+        
+
+        .data-table th,
+        .data-table td {
+            padding: 10px;
+            font-size: 0.9rem;
+            word-wrap: break-word;
+        }
+
+        .data-table td:nth-child(5),
+        /* Delito */
+        .data-table td:nth-child(7),
+        /* Imputados */
+        .data-table td:nth-child(9),
+        /* Traductor */
+        .data-table td:nth-child(11)
+
+        /* Juez */
+            {
+            max-width: 150px;
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+        }
+
+        .btn-edit-icon,
+        .btn-delete-icon {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-edit-icon {
+            background: #C79A59;
+        }
+
+        .btn-delete-icon {
+            background: #874026;
+            color: white;
         }
 
         @stack('styles')

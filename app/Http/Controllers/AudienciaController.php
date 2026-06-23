@@ -43,9 +43,17 @@ class AudienciaController extends Controller
                             ->orWhere('apellidos', 'like', "%{$buscar}%");
                     });
             })
-            ->orderByDesc('fecha')
-            ->paginate(15)
+            ->orderByRaw("
+                CASE
+                    WHEN fecha >= CURDATE() THEN 0
+                    ELSE 1
+                END
+            ")
+            ->orderBy('fecha')
+            ->orderBy('hora')
+            ->paginate(8)
             ->withQueryString();
+
 
         return view('audiencias.index', compact('audiencias', 'buscar'));
     }
@@ -86,8 +94,8 @@ class AudienciaController extends Controller
             'traductor_id' => 'nullable|exists:traductor,id',
             'psicologo_id' => 'nullable|exists:psicologo,id',
             'salas_id' => 'required|exists:salas,id',
-            'imputados' => 'nullable|array',
-            'imputados.*' => 'exists:imputados,id',
+            'imputados' => 'required|array|min:1',
+            'imputados.*' => 'required|exists:imputados,id',
 
         ]);
 
@@ -148,7 +156,8 @@ class AudienciaController extends Controller
     {
         $data = $request->validate([
             'causa' => [
-                'required',            ],
+                'required',
+            ],
             'fecha' => 'required|date',
             'hora' => 'required',
             'modalidad' => 'required|in:Presencial,Virtual,Híbrida',
@@ -159,8 +168,8 @@ class AudienciaController extends Controller
             'traductor_id' => 'nullable|exists:traductor,id',
             'psicologo_id' => 'nullable|exists:psicologo,id',
             'salas_id' => 'required|exists:salas,id',
-            'imputados' => 'nullable|array',
-            'imputados.*' => 'exists:imputados,id',
+            'imputados' => 'required|array|min:1',
+            'imputados.*' => 'required|exists:imputados,id',
         ]);
 
         $imputados = $data['imputados'] ?? [];

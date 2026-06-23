@@ -69,7 +69,6 @@
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>ID</th>
                         <th>Causa</th>
                         <th>Fecha</th>
                         <th>Hora</th>
@@ -90,7 +89,6 @@
                 <tbody>
                     @forelse($audiencias as $audiencia)
                         <tr>
-                            <td><strong>#{{ $audiencia->id }}</strong></td>
                             <td><span class="text-strong">{{ $audiencia->causa }}</span></td>
                             <td>{{ optional($audiencia->fecha)->format('Y-m-d') ?? '-' }}</td>
                             <td>{{ optional($audiencia->hora)->format('H:i') ?? ($audiencia->hora ?? '-') }}</td>

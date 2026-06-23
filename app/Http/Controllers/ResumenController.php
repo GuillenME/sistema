@@ -68,8 +68,12 @@ class ResumenController extends Controller
             'audiencia.sala',
             'audiencia.imputados',
         ]);
-
-        $pdf = Pdf::loadView('resumen.pdf', compact('resumen'));
+        $imputados = $resumen->audiencia->imputados
+            ->map(function ($i) {
+                return trim(($i->nombre ?? '') . ' ' . ($i->apellidos ?? ''));
+            })
+            ->implode(', ');
+        $pdf = Pdf::loadView('resumen.pdf', compact('resumen', 'imputados'));
 
         return $pdf->download('Resumen_' . $resumen->id . '.pdf');
     }
