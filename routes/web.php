@@ -58,8 +58,10 @@ Route::middleware(['auth', 'role:admin,oficinista'])->group(function () {
         '/resumen/{resumen}/pdf',
         [ResumenController::class, 'exportPdf']
     )->name('resumen.pdf');
-    Route::get('/resumen/{resumen}/word', [ResumenController::class, 'exportWord'])
-        ->name('resumen.word');
+    Route::get(
+        '/resumen/{resumen}/word',
+        [ResumenController::class, 'exportWord']
+    )->name('resumen.word');
 });
 
 // Administracion de audiencias -> solo admin

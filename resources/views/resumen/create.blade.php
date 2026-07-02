@@ -76,7 +76,7 @@
 
                 <div class="form-group">
                     <label for="defensa">Defensa</label>
-                    <input type="text" id="defensa" name="defensa" value="{{ old('defensa') }}" maxlength="45">
+                    <input type="text" id="defensa" name="defensa" value="{{ old('defensa') }}" maxlength="255">
                     @error('defensa')
                         <div class="form-error">{{ $message }}</div>
                     @enderror
@@ -84,7 +84,7 @@
 
                 <div class="form-group">
                     <label for="fiscalia">Fiscalia</label>
-                    <input type="text" id="fiscalia" name="fiscalia" value="{{ old('fiscalia') }}" maxlength="45">
+                    <input type="text" id="fiscalia" name="fiscalia" value="{{ old('fiscalia') }}" maxlength="255">
                     @error('fiscalia')
                         <div class="form-error">{{ $message }}</div>
                     @enderror
@@ -92,7 +92,7 @@
 
                 <div class="form-group">
                     <label for="auxiliar">Auxiliar de sala</label>
-                    <input type="text" id="auxiliar" name="auxiliar" value="{{ old('auxiliar') }}" maxlength="45">
+                    <input type="text" id="auxiliar" name="auxiliar" value="{{ old('auxiliar') }}" maxlength="255">
                     @error('auxiliar')
                         <div class="form-error">{{ $message }}</div>
                     @enderror
@@ -100,7 +100,7 @@
 
                 <div class="form-group">
                     <label for="victima">Victima(s)</label>
-                    <input type="text" id="victima" name="victima" value="{{ old('victima') }}" maxlength="45">
+                    <input type="text" id="victima" name="victima" value="{{ old('victima') }}" maxlength="255">
                     @error('victima')
                         <div class="form-error">{{ $message }}</div>
                     @enderror
@@ -116,7 +116,7 @@
 
                 <div class="form-group full">
                     <label for="medida">Medida cautelar</label>
-                    <input type="text" id="medida" name="medida" value="{{ old('medida') }}" maxlength="45">
+                    <input type="text" id="medida" name="medida" value="{{ old('medida') }}" maxlength="255">
                     <small>Ingrese el plazo en días.</small>
                     @error('medida')
                         <div class="form-error">{{ $message }}</div>

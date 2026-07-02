@@ -130,7 +130,7 @@
 
     <div class="contenido">
 
-        
+
         <p>
 
             <strong>IMPUTADO:</strong>
@@ -169,22 +169,22 @@
         <span class="campo">VÍCTIMA:</span>
         {{ $resumen->victima }}
     </div>
-
+    <br>
     <div class="contenido">
         <span class="campo">HECHOS OCURRIDOS:</span><br><br>
         {{ $resumen->hechos_ocurridos }}
     </div>
-
+    <br>
     <div class="contenido">
         <span class="campo">OBSERVACIONES:</span><br><br>
         {{ $resumen->observaciones }}
     </div>
-
+    <br>
     <div class="contenido">
         <span class="campo">MEDIDA:</span><br><br>
         {{ $resumen->medida }}
     </div>
-
+    <br>
     <div class="contenido">
         <span class="campo">HORA DE INICIO:</span>
         {{ optional($resumen->hora_inicio)->format('H:i') }}
@@ -194,7 +194,7 @@
         {{ optional($resumen->hora_final)->format('H:i') }}
     </div>
 
-    
+
 
     <div class="footer">
         Documento generado el {{ now()->format('d/m/Y') }}

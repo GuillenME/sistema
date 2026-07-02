@@ -83,8 +83,9 @@
                     <a href="{{ route('resumen.pdf', $resumen) }}" class="btn-primary">
                         Descargar PDF
                     </a>
-                    <a href="{{ route('resumen.word', $resumen) }}" class="btn-primary">
-                        Descargar Word
+                    <a href="{{ route('resumen.word', $resumen) }}" class="btn btn-primary">
+                        <i class="bi bi-file-earmark-word"></i>
+                        Word
                     </a>
                     <a href="{{ route('resumen.edit', $resumen) }}" class="btn-edit">Editar</a>
                     <form action="{{ route('resumen.destroy', $resumen) }}" method="POST"
