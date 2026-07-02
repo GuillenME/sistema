@@ -193,7 +193,10 @@
 @section('content')
 
     @php
-        $selectedImputados = old('imputados', []);
+        $reagendar = isset($audiencia);
+
+        $selectedImputados = old('imputados', $reagendar ? $audiencia->imputados->pluck('id')->toArray() : []);
+
         $imputadosMode = count($selectedImputados) > 1 ? 'multiple' : 'single';
     @endphp
 
@@ -201,7 +204,9 @@
         <div class="form-card">
 
 
-            <h1 class="form-title">Nueva audiencia</h1>
+            <h1 class="form-title">
+                {{ $reagendar ? 'Reagendar audiencia' : 'Nueva audiencia' }}
+            </h1>
             <p class="form-subtitle">
                 Completa la información para registrar la audiencia.
             </p>
@@ -224,7 +229,7 @@
                     <label for="causa">Causa *</label>
 
                     <input type="text" id="causa" name="causa" placeholder="Ej: 23/2026"
-                        value="{{ old('causa') }}" required>
+                        value="{{ old('causa', $audiencia->causa ?? '') }}" required>
 
                     @error('causa')
                         <div class="form-error">{{ $message }}</div>
@@ -239,7 +244,7 @@
 
                         @foreach ($tipoAudiencias as $tipo)
                             <option value="{{ $tipo->id }}"
-                                {{ old('tipo_audiencia_id') == $tipo->id ? 'selected' : '' }}>
+                                {{ old('tipo_audiencia_id', $audiencia->tipo_audiencia_id ?? '') == $tipo->id ? 'selected' : '' }}>
                                 {{ $tipo->tipo }}
                             </option>
                         @endforeach
@@ -261,7 +266,8 @@
                         <option value="">Selecciona</option>
 
                         @foreach ($delitos as $delito)
-                            <option value="{{ $delito->id }}" {{ old('delitos_id') == $delito->id ? 'selected' : '' }}>
+                            <option value="{{ $delito->id }}"
+                                {{ old('delitos_id', $audiencia->delitos_id ?? '') == $delito->id ? 'selected' : '' }}>
                                 {{ $delito->delito }}
                             </option>
                         @endforeach
@@ -279,7 +285,8 @@
                         <option value="">Selecciona</option>
 
                         @foreach ($jueces as $juez)
-                            <option value="{{ $juez->id }}" {{ old('juez_id') == $juez->id ? 'selected' : '' }}>
+                            <option value="{{ $juez->id }}"
+                                {{ old('juez_id', $audiencia->juez_id ?? '') == $juez->id ? 'selected' : '' }}>
                                 {{ $juez->nombre }}
                             </option>
                         @endforeach
@@ -297,7 +304,8 @@
                         <option value="">Selecciona</option>
 
                         @foreach ($salas as $sala)
-                            <option value="{{ $sala->id }}" {{ old('salas_id') == $sala->id ? 'selected' : '' }}>
+                            <option value="{{ $sala->id }}"
+                                {{ old('salas_id', $audiencia->salas_id ?? '') == $sala->id ? 'selected' : '' }}>
                                 {{ $sala->sala }}
                             </option>
                         @endforeach
@@ -368,7 +376,7 @@
 
                         @foreach ($traductores as $traductor)
                             <option value="{{ $traductor->id }}"
-                                {{ old('traductor_id') == $traductor->id ? 'selected' : '' }}>
+                                {{ old('traductor_id', $audiencia->traductor_id ?? '') == $traductor->id ? 'selected' : '' }}>
                                 {{ $traductor->lengua }} - {{ $traductor->nombres }}
                             </option>
                         @endforeach
@@ -387,7 +395,7 @@
 
                         @foreach ($psicologos as $psicologo)
                             <option value="{{ $psicologo->id }}"
-                                {{ old('psicologo_id') == $psicologo->id ? 'selected' : '' }}>
+                                {{ old('psicologo_id', $audiencia->psicologo_id ?? '') == $psicologo->id ? 'selected' : '' }}>
                                 {{ $psicologo->nombre }}
                             </option>
                         @endforeach
@@ -404,11 +412,13 @@
                     <select id="modalidad" name="modalidad" required>
                         <option value="">Selecciona</option>
 
-                        <option value="Presencial" {{ old('modalidad') == 'Presencial' ? 'selected' : '' }}>
+                        <option value="Presencial"
+                            {{ old('modalidad', $audiencia->modalidad ?? '') == 'Presencial' ? 'selected' : '' }}>
                             Presencial
                         </option>
 
-                        <option value="Virtual" {{ old('modalidad') == 'Virtual' ? 'selected' : '' }}>
+                        <option value="Virtual"
+                            {{ old('modalidad', $audiencia->modalidad ?? '') == 'Virtual' ? 'selected' : '' }}>
                             Virtual
                         </option>
                     </select>
@@ -440,7 +450,7 @@
 
                 <div class="form-actions">
                     <button type="submit" class="btn-submit">
-                        Guardar audiencia
+                        {{ $reagendar ? 'Reagendar audiencia' : 'Guardar audiencia' }}
                     </button>
 
                     <a href="{{ route('audiencias.index') }}" class="btn-cancel">

@@ -367,4 +367,31 @@ class AudienciaController extends Controller
             $audiencia->estado ?? 'Programada',
         ];
     }
+
+    public function reagendar(Audiencia $audiencia)
+    {
+        $audiencia->load('imputados');
+
+        $jueces = Juez::orderBy('nombre')->get();
+        $tipoAudiencias = TipoAudiencia::orderBy('tipo')->get();
+        $delitos = Delito::orderBy('delito')->get();
+        $traductores = Traductor::orderBy('nombres')->get();
+        $psicologos = Psicologo::orderBy('nombre')->get();
+        $salas = Sala::orderBy('sala')->get();
+        $imputados = Imputado::orderBy('apellidos')
+            ->orderBy('nombre')
+            ->get();
+
+        return view('audiencias.create', compact(
+            'audiencia',
+            'jueces',
+            'tipoAudiencias',
+            'delitos',
+            'traductores',
+            'psicologos',
+            'salas',
+            'imputados'
+        ));
+        
+    }
 }

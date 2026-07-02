@@ -62,6 +62,10 @@ Route::middleware(['auth', 'role:admin,oficinista'])->group(function () {
         '/resumen/{resumen}/word',
         [ResumenController::class, 'exportWord']
     )->name('resumen.word');
+    Route::get(
+        '/audiencias/{audiencia}/reagendar',
+        [AudienciaController::class, 'reagendar']
+    )->name('audiencias.reagendar');
 });
 
 // Administracion de audiencias -> solo admin

@@ -119,8 +119,16 @@
                                 <td>
                                     <div class="table-actions">
 
-                                        <a href="{{ route('audiencias.edit', $audiencia) }}"
-                                            class="btn-secondary btn-sm">Modificar</a>
+                                        <a href="{{ route('audiencias.edit', $audiencia) }}" class="btn-secondary btn-sm">
+                                            Modificar
+                                        </a>
+
+                                        @if (($audiencia->estado ?? 'Programada') === 'Diferida')
+                                            <a href="{{ route('audiencias.reagendar', $audiencia) }}"
+                                                class="btn-primary btn-sm">
+                                                Reagendar
+                                            </a>
+                                        @endif
 
                                         @if (($audiencia->estado ?? 'Programada') !== 'Diferida' && $puedeDiferir)
                                             <form action="{{ route('audiencias.diferir', $audiencia) }}" method="POST"
@@ -128,7 +136,9 @@
                                                 @csrf
                                                 @method('PATCH')
 
-                                                <button type="submit" class="btn-danger btn-sm">Diferir</button>
+                                                <button type="submit" class="btn-danger btn-sm">
+                                                    Diferir
+                                                </button>
                                             </form>
                                         @endif
 
