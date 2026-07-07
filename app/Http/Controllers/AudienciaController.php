@@ -186,7 +186,13 @@ class AudienciaController extends Controller
 
     public function diferir(Audiencia $audiencia)
     {
-        $fechaLimite = Carbon::parse($audiencia->fecha)->addDays(3);
+        if (($audiencia->estado ?? 'Programada') !== 'Programada') {
+            return redirect()
+                ->route('audiencias.index')
+                ->with('error', 'Solo es posible diferir audiencias programadas.');
+        }
+
+        $fechaLimite = Carbon::parse($audiencia->fecha)->addDays(2)->endOfDay();
 
         if (now()->gt($fechaLimite)) {
             return redirect()

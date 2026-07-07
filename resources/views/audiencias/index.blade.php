@@ -113,7 +113,10 @@
                             </td>
                             @if ($userRole === 'admin')
                                 @php
-                                    $puedeDiferir = now()->lte(\Carbon\Carbon::parse($audiencia->fecha)->addDays(3));
+                                    $estadoAudiencia = $audiencia->estado ?? 'Programada';
+                                    $puedeDiferir = now()->lte(
+                                        \Carbon\Carbon::parse($audiencia->fecha)->addDays(2)->endOfDay(),
+                                    );
                                 @endphp
 
                                 <td>
@@ -123,14 +126,14 @@
                                             Modificar
                                         </a>
 
-                                        @if (($audiencia->estado ?? 'Programada') === 'Diferida')
+                                        @if ($estadoAudiencia === 'Diferida')
                                             <a href="{{ route('audiencias.reagendar', $audiencia) }}"
                                                 class="btn-primary btn-sm">
                                                 Reagendar
                                             </a>
                                         @endif
 
-                                        @if (($audiencia->estado ?? 'Programada') !== 'Diferida' && $puedeDiferir)
+                                        @if ($estadoAudiencia === 'Programada' && $puedeDiferir)
                                             <form action="{{ route('audiencias.diferir', $audiencia) }}" method="POST"
                                                 onsubmit="return confirm('¿Desea diferir esta audiencia?')">
                                                 @csrf

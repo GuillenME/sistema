@@ -159,8 +159,9 @@ class ResumenController extends Controller
             ->implode(', ');
 
         $phpWord = new PhpWord();
+        $phpWord->setDefaultFontName('DejaVu Sans');
+        $phpWord->setDefaultFontSize(11);
 
-        // Estilos base
         $section = $phpWord->addSection([
             'marginLeft'   => 800,
             'marginRight'  => 800,
@@ -168,123 +169,107 @@ class ResumenController extends Controller
             'marginBottom' => 600,
         ]);
 
-        $titleStyle = ['bold' => true, 'size' => 14];
-        $bold = ['bold' => true];
+        $titleStyle = ['bold' => false, 'size' => 18, 'color' => 'B37A4A'];
+        $bold = ['bold' => true, 'size' => 11];
         $normal = ['size' => 11];
+        $justify = ['alignment' => Jc::BOTH, 'spaceAfter' => 120];
+        $contentParagraph = ['alignment' => Jc::BOTH, 'spaceAfter' => 160];
 
-        // =========================
-        // LOGO + TITULO
-        // =========================
-        $section->addImage(public_path('img/logop.jpg'), [
-            'height' => 80,
-            'alignment' => Jc::LEFT,
+        $header = $section->addTable(['width' => 100 * 50, 'unit' => 'pct']);
+        $header->addRow();
+
+        $logoCell = $header->addCell(5000);
+        $logoCell->addImage(public_path('img/logop.jpg'), [
+            'height' => 100,
         ]);
 
-        $section->addText(
-            "JUZGADO DE CONTROL DEL\nDISTRITO JUDICIAL DE OCOSINGO",
-            $titleStyle,
-            ['alignment' => Jc::RIGHT]
-        );
+        $titleCell = $header->addCell(5000);
+        $titleCell->addText('JUZGADO DE CONTROL DEL', $titleStyle, ['alignment' => Jc::RIGHT]);
+        $titleCell->addText('DISTRITO JUDICIAL DE OCOSINGO.', $titleStyle, ['alignment' => Jc::RIGHT]);
 
-        $section->addText(str_repeat('-', 90));
+        $section->addImage(public_path('img/lineas.jpg'), [
+            'width' => 500,
+            'alignment' => Jc::CENTER,
+        ]);
 
-        // =========================
-        // ENCABEZADO PRINCIPAL
-        // =========================
         $fecha = optional($resumen->audiencia->fecha)->translatedFormat('d \d\e F \d\e Y');
-
-        $section->addText(
-            "SIENDO LAS " . ($resumen->hora_inicio ?? '') .
-                " DEL DÍA " . strtoupper($fecha)
-        );
-
-        $section->addText(
-            "DAMOS INICIO A LA AUDIENCIA " . strtoupper($resumen->audiencia->tipoAudiencia->tipo ?? '')
-        );
-
-        $section->addText(
-            "DENTRO DE LA CAUSA PENAL " . ($resumen->audiencia->causa ?? '')
-        );
-
-        $section->addText(
-            "EN CONTRA DE " . strtoupper($imputados)
-        );
-
-        $section->addText(
-            "POR EL DELITO DE " . strtoupper($resumen->audiencia->delito->delito ?? '')
-        );
-
-        $section->addText(
-            "COMETIDO EN AGRAVIO DE " . strtoupper($resumen->victima)
-        );
+        $horaInicio = optional($resumen->hora_inicio)->format('H:i') ?? '';
+        $horaFinal = optional($resumen->hora_final)->format('H:i') ?? '';
+        $tipoAudiencia = $resumen->audiencia->tipoAudiencia->tipo ?? '';
+        $causa = $resumen->audiencia->causa ?? '';
+        $delito = $resumen->audiencia->delito->delito ?? '';
+        $victima = $resumen->victima ?? '';
 
         $juez = trim(
             ($resumen->audiencia->juez->nombre ?? '') . ' ' .
                 ($resumen->audiencia->juez->apellidos ?? '')
         );
 
-        $section->addText(
-            "DIRIGIDA POR EL JUEZ DE CONTROL " . strtoupper($juez)
-        );
+        $section->addTextBreak();
+
+        $intro = $section->addTextRun($justify);
+        $intro->addText('SIENDO LAS ', $normal);
+        $intro->addText($horaInicio, $bold);
+        $intro->addText(' DEL DÍA ', $normal);
+        $intro->addText($this->wordUpper($fecha), $bold);
+        $intro->addText(', DAMOS INICIO A LA AUDIENCIA ', $normal);
+        $intro->addText($this->wordUpper($tipoAudiencia), $bold);
+        $intro->addText(', DENTRO DE LA CAUSA PENAL ', $normal);
+        $intro->addText($causa, $bold);
+        $intro->addText(', EN CONTRA DE ', $normal);
+        $intro->addText($this->wordUpper($imputados), $bold);
+        $intro->addText(', POR SU PROBABLE INTERVENCIÓN DEL HECHO QUE LA LEY SEÑALA COMO DELITO DE ', $normal);
+        $intro->addText($this->wordUpper($delito), $bold);
+        $intro->addText(', COMETIDO EN AGRAVIO DE ', $normal);
+        $intro->addText($this->wordUpper($victima), $bold);
+        $intro->addText(', QUE SERÁ DIRIGIDA POR EL JUEZ DE CONTROL ', $normal);
+        $intro->addText($this->wordUpper($juez), $bold);
+        $intro->addText('.', $normal);
+
+        $imputadoText = $section->addTextRun($contentParagraph);
+        $imputadoText->addText('IMPUTADO: ', $bold);
+        $imputadoText->addText($this->wordUpper($imputados) . ', por su probable intervención del hecho que la Ley señala como delito de ', $normal);
+        $imputadoText->addText($this->wordUpper($delito), $normal);
+        $imputadoText->addText(', cometido en agravio de ', $normal);
+        $imputadoText->addText($this->wordUpper($victima), $bold);
+        $imputadoText->addText(',', $normal);
+
+        $this->addWordLabelLine($section, 'DEFENSA:', $resumen->defensa, $bold, $normal);
+        $this->addWordLabelLine($section, 'FISCALÍA:', $resumen->fiscalia, $bold, $normal);
+        $this->addWordLabelLine($section, 'AUXILIAR:', $resumen->auxiliar, $bold, $normal);
+        $this->addWordLabelLine($section, 'VÍCTIMA(S):', $victima, $bold, $normal);
 
         $section->addTextBreak(1);
 
-        // =========================
-        // PARTES PROCESALES
-        // =========================
-        $section->addText("DEFENSA: " . $resumen->defensa, $normal);
-        $section->addText("FISCALÍA: " . $resumen->fiscalia, $normal);
-        $section->addText("AUXILIAR: " . $resumen->auxiliar, $normal);
-        $section->addText("VÍCTIMA: " . $resumen->victima, $normal);
+        $section->addText('HECHOS OCURRIDOS:', $bold);
+        $section->addText($resumen->hechos_ocurridos ?? '', $normal, $contentParagraph);
 
         $section->addTextBreak(1);
 
-        // =========================
-        // HECHOS
-        // =========================
-        $section->addText("HECHOS OCURRIDOS", $bold);
-        $section->addText($resumen->hechos_ocurridos ?? '', $normal);
+        $section->addText('OBSERVACIONES:', $bold);
+        $section->addText($resumen->observaciones ?? '', $normal, $contentParagraph);
 
         $section->addTextBreak(1);
 
-        // =========================
-        // OBSERVACIONES
-        // =========================
-        $section->addText("OBSERVACIONES", $bold);
-        $section->addText($resumen->observaciones ?? '', $normal);
+        $section->addText('MEDIDA CAUTELAR:', $bold);
+        $section->addText($resumen->medida ?? '', $normal, $contentParagraph);
 
         $section->addTextBreak(1);
 
-        // =========================
-        // MEDIDA
-        // =========================
-        $section->addText("MEDIDA", $bold);
-        $section->addText($resumen->medida ?? '', $normal);
-
-        $section->addTextBreak(1);
-
-        // =========================
-        // HORAS
-        // =========================
-        $section->addText(
-            "HORA DE INICIO: " . ($resumen->hora_inicio ?? '') .
-                "     HORA DE CONCLUSIÓN: " . ($resumen->hora_final ?? '')
-        );
+        $horas = $section->addTextRun(['spaceAfter' => 120]);
+        $horas->addText('HORA DE INICIO: ', $bold);
+        $horas->addText($horaInicio, $normal);
+        $horas->addText('        HORA DE CONCLUSIÓN: ', $bold);
+        $horas->addText($horaFinal, $normal);
 
         $section->addTextBreak(2);
 
-        // =========================
-        // FOOTER SIMPLE
-        // =========================
         $section->addText(
             "Documento generado el " . now()->format('d/m/Y'),
             ['size' => 9],
             ['alignment' => Jc::RIGHT]
         );
 
-        // =========================
-        // DESCARGA
-        // =========================
         $fileName = 'Resumen_' . $resumen->id . '.docx';
         $tempFile = storage_path("app/temp/$fileName");
 
@@ -296,5 +281,23 @@ class ResumenController extends Controller
         $writer->save($tempFile);
 
         return response()->download($tempFile)->deleteFileAfterSend(true);
+    }
+
+    private function addWordLabelLine($section, string $label, ?string $value, array $labelStyle, array $valueStyle): void
+    {
+        $line = $section->addTextRun(['spaceAfter' => 80]);
+        $line->addText($label . ' ', $labelStyle);
+        $line->addText($value ?? '', $valueStyle);
+    }
+
+    private function wordUpper(?string $value): string
+    {
+        $value = $value ?? '';
+
+        if (function_exists('mb_strtoupper')) {
+            return mb_strtoupper($value, 'UTF-8');
+        }
+
+        return strtoupper($value);
     }
 }

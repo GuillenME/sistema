@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Audiencia;
 use App\Models\Notificacion;
 use App\Models\Resumen;
 use Carbon\Carbon;
@@ -14,6 +15,27 @@ class VerificarPlazos extends Command
     protected $description = 'Verifica plazos próximos a vencer';
 
     public function handle()
+    {
+        $this->finalizarAudienciasVencidas();
+        $this->notificarResumenesPorVencer();
+
+        return 0;
+    }
+
+    private function finalizarAudienciasVencidas(): void
+    {
+        $fechaLimite = Carbon::today()->subDays(2);
+
+        $total = Audiencia::where('estado', 'Programada')
+            ->whereDate('fecha', '<', $fechaLimite)
+            ->update(['estado' => 'Finalizada']);
+
+        if ($total > 0) {
+            $this->info("{$total} audiencia(s) finalizada(s) automaticamente por vencimiento del plazo para diferir.");
+        }
+    }
+
+    private function notificarResumenesPorVencer(): void
     {
         $resumenes = Resumen::whereNotNull('fecha_vencimiento')->get();
 
@@ -45,7 +67,5 @@ class VerificarPlazos extends Command
                 }
             }
         }
-
-        return 0;
     }
 }

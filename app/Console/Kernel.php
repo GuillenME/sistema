@@ -16,7 +16,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('plazos:verificar')
-            ->everyEightHours();
+            ->cron('0 */8 * * *');
     }
 
     /**

@@ -41,6 +41,8 @@
                             Programada</option>
                         <option value="Diferida" {{ ($filters['estado'] ?? '') === 'Diferida' ? 'selected' : '' }}>Diferida
                         </option>
+                        <option value="Finalizada" {{ ($filters['estado'] ?? '') === 'Finalizada' ? 'selected' : '' }}>
+                            Finalizada</option>
                     </select>
                     @error('estado')
                         <div class="form-error">{{ $message }}</div>
