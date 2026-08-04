@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Imputado extends Model
 {
-    use HasFactory;
+    use HasFactory, Concerns\NormalizesTextAttributes;
+
+    protected $titleCaseAttributes = ['nombre', 'apellidos', 'causa'];
 
     public $timestamps = false;
     protected $table = 'imputados';

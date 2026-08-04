@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Traductor extends Model
 {
-    use HasFactory;
+    use HasFactory, Concerns\NormalizesTextAttributes;
+
+    protected $titleCaseAttributes = ['nombres', 'lengua'];
 
     public $timestamps = false;
     protected $table = 'traductor';

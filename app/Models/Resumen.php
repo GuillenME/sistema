@@ -7,7 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Resumen extends Model
 {
-    use HasFactory;
+    use HasFactory, Concerns\NormalizesTextAttributes;
+
+    protected $titleCaseAttributes = ['defensa', 'fiscalia', 'auxiliar', 'victima', 'medida'];
+
+    protected $sentenceCaseAttributes = ['hechos_ocurridos', 'observaciones'];
 
     public $timestamps = false;
     protected $table = 'resumen';

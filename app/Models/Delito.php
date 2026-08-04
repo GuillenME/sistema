@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Delito extends Model
 {
-    use HasFactory;
+    use HasFactory, Concerns\NormalizesTextAttributes;
+
+    protected $titleCaseAttributes = ['delito'];
 
     public $timestamps = false;
     protected $table = 'delitos';

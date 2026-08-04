@@ -10,7 +10,9 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, \App\Models\Concerns\NormalizesTextAttributes;
+
+    protected $titleCaseAttributes = ['nombre', 'puesto'];
 
     protected $table = 'usuarios';
     public $timestamps = false;

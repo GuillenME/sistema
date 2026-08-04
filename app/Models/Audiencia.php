@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Audiencia extends Model
 {
-    use HasFactory;
+    use HasFactory, Concerns\NormalizesTextAttributes;
+
+    protected $titleCaseAttributes = ['causa'];
 
     public $timestamps = false;
     protected $table = 'audiencias';

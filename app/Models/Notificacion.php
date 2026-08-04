@@ -6,7 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Notificacion extends Model
 {
+    use Concerns\NormalizesTextAttributes;
+
     protected $table = 'notificaciones';
+
+    protected $sentenceCaseAttributes = ['mensaje'];
 
     protected $fillable = [
         'resumen_id',
