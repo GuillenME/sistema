@@ -13,6 +13,8 @@
             <a href="{{ route('traductores.create') }}" class="btn-primary">Nuevo traductor</a>
         </div>
 
+        <x-search-form :action="route('traductores.index')" placeholder="Buscar por nombre o lengua..." />
+
         @if($traductores->count() > 0)
             <div class="panel table-wrapper">
                 <table class="data-table">

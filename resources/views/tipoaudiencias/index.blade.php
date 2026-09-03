@@ -13,6 +13,8 @@
             <a href="{{ route('tipoaudiencias.create') }}" class="btn-primary">Nuevo tipo de audiencia</a>
         </div>
 
+        <x-search-form :action="route('tipoaudiencias.index')" placeholder="Buscar tipo de audiencia..." />
+
         @if($tipoaudiencias->count() > 0)
             <div class="panel table-wrapper">
                 <table class="data-table">

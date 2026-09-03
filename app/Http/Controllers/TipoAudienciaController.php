@@ -10,10 +10,13 @@ class TipoAudienciaController extends Controller
     /**
      * Display a listing of the tipoaudiencias.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tipoaudiencias = TipoAudiencia::paginate(10);
-        return view('tipoaudiencias.index', compact('tipoaudiencias'));
+        $buscar = $request->buscar;
+        $tipoaudiencias = TipoAudiencia::when($buscar, fn ($query, $buscar) => $query->where('tipo', 'like', "%{$buscar}%"))
+            ->orderBy('tipo')->paginate(10)->withQueryString();
+
+        return view('tipoaudiencias.index', compact('tipoaudiencias', 'buscar'));
     }
 
     /**

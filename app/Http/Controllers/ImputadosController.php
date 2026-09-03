@@ -15,7 +15,9 @@ class ImputadosController extends Controller
         $imputados = Imputado::withCount('audiencias')
             ->when($buscar, function ($query, $buscar) {
                 $query->where('nombre', 'like', "%{$buscar}%")
-                    ->orWhere('apellidos', 'like', "%{$buscar}%");
+                    ->orWhere('apellidos', 'like', "%{$buscar}%")
+                    ->orWhere('causa', 'like', "%{$buscar}%")
+                    ->orWhereHas('delito', fn ($delitoQuery) => $delitoQuery->where('delito', 'like', "%{$buscar}%"));
             })
             ->orderBy('apellidos')
             ->orderBy('nombre')

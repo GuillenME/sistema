@@ -13,6 +13,8 @@
             <a href="{{ route('jueces.create') }}" class="btn-primary">Nuevo juez</a>
         </div>
 
+        <x-search-form :action="route('jueces.index')" placeholder="Buscar por nombre, apellidos o lugar..." />
+
         @if($jueces->count() > 0)
             <div class="panel table-wrapper">
                 <table class="data-table">

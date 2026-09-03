@@ -7,10 +7,15 @@ use Illuminate\Http\Request;
 
 class TraductorController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $traductores = Traductor::paginate(10);
-        return view('traductores.index', compact('traductores'));
+        $buscar = $request->buscar;
+        $traductores = Traductor::when($buscar, function ($query, $buscar) {
+            $query->where('nombres', 'like', "%{$buscar}%")
+                ->orWhere('lengua', 'like', "%{$buscar}%");
+        })->orderBy('nombres')->paginate(10)->withQueryString();
+
+        return view('traductores.index', compact('traductores', 'buscar'));
     }
 
     public function create()

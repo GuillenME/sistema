@@ -13,17 +13,32 @@ use PhpOffice\PhpWord\SimpleType\Jc;
 
 class ResumenController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $buscar = $request->buscar;
         $resumenes = Resumen::with([
             'audiencia.delito',
             'audiencia.tipoAudiencia',
             'audiencia.imputados',
         ])
+            ->when($buscar, function ($query, $buscar) {
+                $query->where('defensa', 'like', "%{$buscar}%")
+                    ->orWhere('fiscalia', 'like', "%{$buscar}%")
+                    ->orWhere('medida', 'like', "%{$buscar}%")
+                    ->orWhereHas('audiencia', function ($audienciaQuery) use ($buscar) {
+                        $audienciaQuery->where('causa', 'like', "%{$buscar}%")
+                            ->orWhereHas('tipoAudiencia', fn ($tipoQuery) => $tipoQuery->where('tipo', 'like', "%{$buscar}%"))
+                            ->orWhereHas('imputados', function ($imputadoQuery) use ($buscar) {
+                                $imputadoQuery->where('nombre', 'like', "%{$buscar}%")
+                                    ->orWhere('apellidos', 'like', "%{$buscar}%");
+                            });
+                    });
+            })
             ->orderByDesc('id')
-            ->paginate(8);
+            ->paginate(8)
+            ->withQueryString();
 
-        return view('resumen.index', compact('resumenes'));
+        return view('resumen.index', compact('resumenes', 'buscar'));
     }
 
     public function create()

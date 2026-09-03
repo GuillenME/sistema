@@ -13,6 +13,8 @@
             <a href="{{ route('psicologos.create') }}" class="btn-primary">Nuevo psicólogo</a>
         </div>
 
+        <x-search-form :action="route('psicologos.index')" placeholder="Buscar por nombre..." />
+
         @if($psicologos->count() > 0)
             <div class="panel table-wrapper">
                 <table class="data-table">

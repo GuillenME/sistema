@@ -18,6 +18,8 @@
             @endif
         </div>
 
+        <x-search-form :action="route('resumen.index')" placeholder="Buscar por causa, imputado, defensa, fiscalía o medida..." />
+
         @if($resumenes->count() > 0)
             <div class="panel table-wrapper">
                 <table class="data-table">

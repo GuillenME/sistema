@@ -7,10 +7,13 @@ use Illuminate\Http\Request;
 
 class PsicologosController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $psicologos = Psicologo::paginate(10);
-        return view('psicologos.index', compact('psicologos'));
+        $buscar = $request->buscar;
+        $psicologos = Psicologo::when($buscar, fn ($query, $buscar) => $query->where('nombre', 'like', "%{$buscar}%"))
+            ->orderBy('nombre')->paginate(10)->withQueryString();
+
+        return view('psicologos.index', compact('psicologos', 'buscar'));
     }
 
     public function create()

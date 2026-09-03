@@ -10,10 +10,16 @@ class JuecesController extends Controller
     /**
      * Display a listing of the jueces.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $jueces = Juez::paginate(10);
-        return view('jueces.index', compact('jueces'));
+        $buscar = $request->buscar;
+        $jueces = Juez::when($buscar, function ($query, $buscar) {
+            $query->where('nombre', 'like', "%{$buscar}%")
+                ->orWhere('apellidos', 'like', "%{$buscar}%")
+                ->orWhere('lugar', 'like', "%{$buscar}%");
+        })->orderBy('apellidos')->orderBy('nombre')->paginate(10)->withQueryString();
+
+        return view('jueces.index', compact('jueces', 'buscar'));
     }
 
     /**

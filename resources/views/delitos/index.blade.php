@@ -13,6 +13,8 @@
             <a href="{{ route('delitos.create') }}" class="btn-primary">Nuevo delito</a>
         </div>
 
+        <x-search-form :action="route('delitos.index')" placeholder="Buscar por delito..." />
+
         @if($delitos->count() > 0)
             <div class="panel table-wrapper">
                 <table class="data-table">

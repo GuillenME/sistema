@@ -11,10 +11,13 @@ class DelitosController extends Controller
     /**
      * Display a listing of the delitos.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $delitos = Delito::paginate(10);
-        return view('delitos.index', compact('delitos'));
+        $buscar = $request->buscar;
+        $delitos = Delito::when($buscar, fn ($query, $buscar) => $query->where('delito', 'like', "%{$buscar}%"))
+            ->orderBy('delito')->paginate(10)->withQueryString();
+
+        return view('delitos.index', compact('delitos', 'buscar'));
     }
 
     /**
