@@ -267,7 +267,11 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="tipo_audiencia_id">Tipo de audiencia *</label>
+                    <label for="tipo_audiencia_id">Tipo de audiencia *
+                        <button type="button" id="btnNuevoTipoAudiencia" class="btn-mini">
+                            + Nuevo tipo
+                        </button>
+                    </label>
 
                     <select id="tipo_audiencia_id" name="tipo_audiencia_id" required>
                         <option value="">Selecciona</option>
@@ -512,6 +516,25 @@
 
         </div>
     </div>
+    <div id="modalTipoAudiencia" class="modal">
+        <div class="modal-content">
+
+            <h3>Nuevo tipo de audiencia</h3>
+
+            <input type="text" id="nuevoTipoAudiencia" placeholder="Nombre del tipo de audiencia">
+
+            <div class="modal-actions">
+                <button type="button" id="cerrarModalTipoAudiencia" class="modal-btn-cancel">
+                    Cancelar
+                </button>
+
+                <button type="button" id="guardarTipoAudiencia" class="modal-btn-save">
+                    Guardar
+                </button>
+            </div>
+
+        </div>
+    </div>
     <div id="modalImputado" class="modal">
         <div class="modal-content">
 
@@ -681,6 +704,50 @@
             updateHelp();
 
         });
+    </script>
+    <script>
+        document.getElementById('btnNuevoTipoAudiencia')
+            .addEventListener('click', function() {
+                document.getElementById('modalTipoAudiencia').style.display = 'flex';
+            });
+
+        document.getElementById('guardarTipoAudiencia')
+            .addEventListener('click', async function() {
+                try {
+                    const response = await fetch('{{ route('tipoaudiencias.ajax.store') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({
+                            tipo: document.getElementById('nuevoTipoAudiencia').value
+                        })
+                    });
+
+                    if (!response.ok) {
+                        alert('Error al guardar el tipo de audiencia');
+                        return;
+                    }
+
+                    const data = await response.json();
+                    const select = document.getElementById('tipo_audiencia_id');
+                    select.appendChild(new Option(data.tipo, data.id, true, true));
+                    $(select).trigger('change');
+
+                    document.getElementById('modalTipoAudiencia').style.display = 'none';
+                    document.getElementById('nuevoTipoAudiencia').value = '';
+                } catch (e) {
+                    console.error(e);
+                    alert('Error de conexión');
+                }
+            });
+
+        document.getElementById('cerrarModalTipoAudiencia')
+            .addEventListener('click', function() {
+                document.getElementById('modalTipoAudiencia').style.display = 'none';
+            });
     </script>
     <script>
         document.getElementById('btnNuevoDelito')

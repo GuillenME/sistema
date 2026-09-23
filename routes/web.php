@@ -41,6 +41,10 @@ Route::middleware(['auth', 'role:admin,oficinista'])->group(function () {
         '/imputados/ajax',
         [ImputadosController::class, 'storeAjax']
     )->name('imputados.ajax.store');
+    Route::post(
+        '/tipoaudiencias/ajax',
+        [TipoAudienciaController::class, 'storeAjax']
+    )->name('tipoaudiencias.ajax.store');
     Route::get('/resumen/create', [ResumenController::class, 'create'])->name('resumen.create');
     Route::post('/resumen', [ResumenController::class, 'store'])->name('resumen.store');
     Route::get('/resumen/{resumen}/edit', [ResumenController::class, 'edit'])->name('resumen.edit');

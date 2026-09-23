@@ -79,4 +79,16 @@ class TipoAudienciaController extends Controller
         $tipoaudiencia->delete();
         return redirect()->route('tipoaudiencias.index')->with('success', 'Tipo de audiencia eliminado exitosamente');
     }
+
+    /**
+     * Crea un tipo de audiencia desde el formulario de agendar audiencia.
+     */
+    public function storeAjax(Request $request)
+    {
+        $validated = $request->validate([
+            'tipo' => 'required|string|max:255|unique:tipo_audiencia,tipo',
+        ]);
+
+        return response()->json(TipoAudiencia::create($validated), 201);
+    }
 }
