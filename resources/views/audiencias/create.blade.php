@@ -132,6 +132,36 @@
     cursor:pointer;
     }
 
+    .schedule-conflict-modal .modal-content {
+    max-width: 560px;
+    border: 3px solid var(--wine);
+    text-align: center;
+    }
+
+    .schedule-conflict-icon {
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 14px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--wine);
+    color: var(--white);
+    font-size: 2rem;
+    font-weight: 800;
+    }
+
+    .schedule-conflict-modal p {
+    margin: 0 0 8px;
+    color: var(--earth);
+    font-weight: 700;
+    line-height: 1.55;
+    }
+
+    .schedule-conflict-modal .modal-actions {
+    justify-content: center;
+    }
+
     @keyframes modalShow{
     from{
     opacity:0;
@@ -214,7 +244,7 @@
             <form action="{{ route('audiencias.store') }}" method="POST" class="form-grid">
                 @csrf
 
-                @if ($errors->any())
+                @if ($errors->any() && ! $errors->has('schedule_conflict'))
                     <div class="error-box">
                         <strong>Corrige los errores:</strong>
                         <ul style="margin-top:10px; list-style:disc; padding-left:20px;">
@@ -503,6 +533,22 @@
 
         </div>
     </div>
+    @if ($errors->has('schedule_conflict'))
+        <div id="modalConflictoAgenda" class="modal schedule-conflict-modal" role="alertdialog"
+            aria-modal="true" aria-labelledby="conflictoAgendaTitulo">
+            <div class="modal-content">
+                <div class="schedule-conflict-icon" aria-hidden="true">!</div>
+                <h3 id="conflictoAgendaTitulo">Conflicto de agenda</h3>
+                <p>No se guardó la audiencia.</p>
+                <p>{{ $errors->first('schedule_conflict') }}</p>
+                <div class="modal-actions">
+                    <button type="button" id="cerrarModalConflicto" class="modal-btn-save">
+                        Revisar fecha y hora
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
     <script>
         document.querySelectorAll('[data-imputados-picker]').forEach(function(picker) {
 
@@ -847,5 +893,20 @@
 
         });
     </script>
+    @if ($errors->has('schedule_conflict'))
+        <script>
+            (function() {
+                var modal = document.getElementById('modalConflictoAgenda');
+                var closeButton = document.getElementById('cerrarModalConflicto');
+
+                modal.style.display = 'flex';
+                closeButton.focus();
+                closeButton.addEventListener('click', function() {
+                    modal.style.display = 'none';
+                    document.getElementById('fecha').focus();
+                });
+            })();
+        </script>
+    @endif
 
 @endsection

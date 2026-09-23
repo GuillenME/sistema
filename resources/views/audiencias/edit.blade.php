@@ -67,6 +67,56 @@
     font-size: 0.92rem;
     font-weight: 700;
     }
+
+    .schedule-conflict-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, .6);
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(3px);
+    }
+
+    .schedule-conflict-modal .modal-content {
+    width: 100%;
+    max-width: 560px;
+    padding: 24px;
+    border: 3px solid var(--wine);
+    border-radius: 12px;
+    background: var(--white);
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, .25);
+    }
+
+    .schedule-conflict-icon {
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 14px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--wine);
+    color: var(--white);
+    font-size: 2rem;
+    font-weight: 800;
+    }
+
+    .schedule-conflict-modal p {
+    color: var(--earth);
+    font-weight: 700;
+    line-height: 1.55;
+    }
+
+    .schedule-conflict-modal button {
+    border: 0;
+    border-radius: 8px;
+    padding: 10px 18px;
+    background: var(--wine);
+    color: var(--white);
+    cursor: pointer;
+    }
 @endpush
 
 @section('content')
@@ -84,7 +134,7 @@
                 @csrf
                 @method('PUT')
 
-                @if ($errors->any())
+                @if ($errors->any() && ! $errors->has('schedule_conflict'))
                     <div class="error-box">
                         <strong>Corrige los errores:</strong>
                         <ul style="margin-top:10px; list-style:disc; padding-left:20px;">
@@ -284,6 +334,19 @@
         </div>
     </div>
 
+    @if ($errors->has('schedule_conflict'))
+        <div id="modalConflictoAgenda" class="schedule-conflict-modal" role="alertdialog"
+            aria-modal="true" aria-labelledby="conflictoAgendaTitulo">
+            <div class="modal-content">
+                <div class="schedule-conflict-icon" aria-hidden="true">!</div>
+                <h3 id="conflictoAgendaTitulo">Conflicto de agenda</h3>
+                <p>No se guardaron los cambios.</p>
+                <p>{{ $errors->first('schedule_conflict') }}</p>
+                <button type="button" id="cerrarModalConflicto">Revisar fecha y hora</button>
+            </div>
+        </div>
+    @endif
+
     <script>
         document.querySelectorAll('[data-imputados-picker]').forEach(function(picker) {
             var search = picker.querySelector('[data-imputados-search]');
@@ -344,5 +407,21 @@
             updateHelp();
         });
     </script>
+
+    @if ($errors->has('schedule_conflict'))
+        <script>
+            (function() {
+                var modal = document.getElementById('modalConflictoAgenda');
+                var closeButton = document.getElementById('cerrarModalConflicto');
+
+                modal.style.display = 'flex';
+                closeButton.focus();
+                closeButton.addEventListener('click', function() {
+                    modal.style.display = 'none';
+                    document.getElementById('fecha').focus();
+                });
+            })();
+        </script>
+    @endif
 
 @endsection

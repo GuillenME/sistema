@@ -12,6 +12,7 @@ use App\Models\TipoAudiencia;
 use App\Models\Traductor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Carbon\Carbon;
 
@@ -103,6 +104,8 @@ class AudienciaController extends Controller
         $imputados = $data['imputados'] ?? [];
         unset($data['imputados']);
 
+        $this->ensureNoDuplicateSchedule($data);
+
         $data['creado_por'] = Auth::id();
 
         $audiencia = Audiencia::create($data);
@@ -175,6 +178,8 @@ class AudienciaController extends Controller
 
         $imputados = $data['imputados'] ?? [];
         unset($data['imputados']);
+
+        $this->ensureNoDuplicateSchedule($data, $audiencia);
 
         $audiencia->update($data);
         $audiencia->imputados()->sync($imputados);
@@ -372,6 +377,49 @@ class AudienciaController extends Controller
             optional($audiencia->creador)->nombre ?? '-',
             $audiencia->estado ?? 'Programada',
         ];
+    }
+
+    /**
+     * Evita registrar dos audiencias para la misma causa, fecha y hora.
+     * Al editar se excluye la audiencia actual para que pueda conservar
+     * su propia programación sin generar un falso positivo.
+     */
+    private function ensureNoDuplicateSchedule(array &$data, ?Audiencia $audiencia = null): void
+    {
+        $data['causa'] = $this->normalizeCausa($data['causa']);
+        $data['hora'] = Carbon::parse($data['hora'])->format('H:i:s');
+
+        $conflictingAudiencia = Audiencia::query()
+            ->where('causa', $data['causa'])
+            // fecha y hora son columnas DATE/TIME; se comparan con su valor
+            // completo para que la consulta use exactamente lo almacenado.
+            ->where('fecha', $data['fecha'])
+            ->where('hora', $data['hora'])
+            ->when($audiencia, function ($query) use ($audiencia) {
+                $query->whereKeyNot($audiencia->getKey());
+            })
+            ->first();
+
+        if (! $conflictingAudiencia) {
+            return;
+        }
+
+        throw ValidationException::withMessages([
+            'schedule_conflict' => sprintf(
+                'Ya existe la audiencia #%d para la causa %s el %s a las %s. Verifica la programación antes de guardar.',
+                $conflictingAudiencia->id,
+                $conflictingAudiencia->causa,
+                Carbon::parse($conflictingAudiencia->fecha)->format('d/m/Y'),
+                Carbon::parse($conflictingAudiencia->hora)->format('H:i')
+            ),
+        ]);
+    }
+
+    private function normalizeCausa(string $causa): string
+    {
+        $causa = trim(preg_replace('/[ \t]+/u', ' ', $causa));
+
+        return mb_convert_case(mb_strtolower($causa, 'UTF-8'), MB_CASE_TITLE, 'UTF-8');
     }
 
     public function reagendar(Audiencia $audiencia)
